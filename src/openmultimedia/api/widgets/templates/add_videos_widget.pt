@@ -1,0 +1,56 @@
+<i18n:domain i18n:domain="collective.formwidget.relationfield"
+             tal:define="portal_state context/@@plone_portal_state;
+                         portal_url portal_state/portal_url;">
+                         
+    <div tal:attributes="id string:${view/id}-autocomplete">
+        <div tal:attributes="id string:${view/id}-input-fields" class="autocompleteInputWidget"
+            tal:content="structure view/renderQueryWidget" />
+        <tal:block replace="structure view/subform/render" />
+    </div>
+    <div class="contenttreeWindow"
+        tal:attributes="id string:${view/id}-contenttree-window">
+        <!--<div class="contenttreeWindowHeader">
+            <h2 i18n:translate="heading_contenttree_browse">Browse for items</h2>
+            <em tal:condition="view/multi_select"
+                i18n:translate="heading_contenttree_help">Select contents from the box on the right, and drop them on the left box add them as related content.
+            </em>
+        </div>-->
+        <div class="contenttreeDroppable">
+            <h3 class="ui-widget-header" i18n:translate="">Newly Related Contents</h3>
+            <ul id="content-droppable"></ul>
+        </div>
+        <div class="contenttreeWidget"
+            tal:attributes="id string:${view/id}-contenttree"
+            tal:define="related_query python:{};">
+            <h3 class="ui-widget-header">Videos recientes</h3>
+            <script type="text/javascript" tal:content="structure view/filter_js"></script>
+            <input type="text"
+                   name="query"
+                   value=""
+                   id="form-widgets-search-videos"
+                   name="form.widgets.search.videos"
+                   class="text-widget textline-field kssattr-formname-++add++collective.nitf.content kssattr-fieldname-form.widgets.search.videos kssattr-fieldset-0">
+                   <!-- Las clases que comienzan con kssattr son para que el field no explote cuando se llama la validacion de kss -->
+            <input type="submit" value="Buscar" onclick="filterVideos(); return false;">
+            <img tal:attributes="src string:${portal_url}/spinner.gif"
+                 alt=""
+                 id="videos-loading-spinner"
+                 style="display:none"/>
+            
+            <ul class="navTree navTreeLevel0" id="related-content-videos">
+                <!--<li tal:replace="structure python:view.render_tree(limit=10)" />-->
+            </ul>
+
+            <div style="text-align:center;">
+                <img tal:attributes="src string:${portal_url}/spinner.gif"
+                        alt=""
+                        id="videos-more-spinner"
+                    style="display:none;"/>
+            </div>
+        </div>
+        <div class="contenttreeWindowActions">
+            <input class="context contentTreeAddVideos" type="button" i18n:attributes="value label_contenttree_add" value="Add"/> <input class="standalone contentTreeCancel" i18n:attributes="value label_contenttree_cancel" type="button" value="Cancel"/>
+        </div>
+    </div>
+    <script type="text/javascript" tal:content="structure view/js"></script>
+</i18n:domain>

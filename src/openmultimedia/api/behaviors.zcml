@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="openmultimedia.api">
+
+    <include package="plone.behavior" file="meta.zcml" />
+
+    <include package="plone.directives.form" file="meta.zcml" />
+    <include package="plone.directives.form" />
+
+    <!-- <grok:grok package=".behaviors" /> -->
+
+    <plone:behavior
+        title="Addable videos"
+        description="Adds a widget to dexterity types, which allows to choose videos from the openmultimedia site"
+        provides=".behavior.IAddableVideos"
+        factory=".behavior.AddableVideos"
+        />
+
+
+</configure>

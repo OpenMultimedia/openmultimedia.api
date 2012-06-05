@@ -1,0 +1,35 @@
+<tal:master define="level options/level|python:0;
+                    children options/children | nothing;
+                    offset options/offset | nothing;
+                    portal_state context/@@plone_portal_state;
+                    portal_url portal_state/portal_url;">
+                    
+    <tal:navitem repeat="node children">
+        <tal:defs define="video_url           node/video_url;
+                          video_thumb         node/video_thumb;
+                          selectable          node/selectable;
+                          description         node/description;
+                          title               node/title;
+                          date                node/date;
+                          li_folder_class     python:'';
+                          li_selectable_class python:selectable and ' selectable' or '';
+                          li_collapsed_class  python:' collapsed';
+                          li_class            string:${li_folder_class}${li_selectable_class}${li_collapsed_class}">
+            <li tal:attributes="class string: draggable navTreeItem visualNoMarker${li_class}">
+
+                <span tal:content="date">Fecha</span>
+                <a tal:attributes="href video_url;
+                                   rel level;
+                                   title title;">
+                <img tal:attributes="src video_thumb" />
+                <span tal:content="title">Selected Item Title</span>
+                </a>
+            </li>
+        </tal:defs>
+    </tal:navitem>
+    <div class="show_more" id="show-more-results">
+        <a tal:attributes="onclick string:appendMoreVideos(${offset});">
+           Mostrar más
+        </a>
+    </div>
+</tal:master>
