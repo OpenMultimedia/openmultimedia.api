@@ -22,11 +22,21 @@ Descargas
 
 Usted puede encontrar la versión de desarrollo del paquete ``openmultimedia.api`` en el `repositorio desarrollotv`_ en Github.com.
 
-
 Autor(es) Original(es)
 ======================
 
+* Joaquin Rosales aka saibatizoku
+
+Colaboraciones impresionantes
+=============================
+
+* Héctor Velarde aka hvelarde
+
+* Leonardo J .Caballero G. aka macagua
+
 * Franco Pellegrini aka frapell
+
+Para una lista actualizada de todo los colaboradores visite: https://github.com/desarrollotv/openmultimedia.api/contributors
 
 
 .. _API: http://es.wikipedia.org/wiki/API
