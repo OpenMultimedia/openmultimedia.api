@@ -10,7 +10,15 @@ from zope.annotation.interfaces import IAnnotations
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
+from zope.event import notify
+
+from zope.interface import Interface
+
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+
 from Products.ATContentTypes.interfaces.link import IATLink
+
+from Products.Archetypes.event import ObjectInitializedEvent
 from Products.Archetypes.interfaces import IObjectInitializedEvent
 
 from openmultimedia.api.interfaces import IVideoAPI
@@ -32,15 +40,15 @@ class LinkApi(grok.View):
         return self
 
 
-class LinkPreviewThumbnailPequenoView(grok.View):
+class LinkPreviewSmallThumbnailView(grok.View):
     grok.context(IATLink)
-    grok.name("thumbnail_pequeno")
+    grok.name("small_thumbnail")
     grok.require("zope2.View")
 
     def render(self):
         link_api = getMultiAdapter((self.context, self.request),
                                        name="link_api")
-        thumb = link_api.get('thumbnail_pequeno')
+        thumb = link_api.get('small_thumbnail')
 
         if thumb:
             return thumb.index_html(self.request, self.request.RESPONSE)
@@ -48,15 +56,15 @@ class LinkPreviewThumbnailPequenoView(grok.View):
             return ''
 
 
-class LinkPreviewThumbnailMedianoView(grok.View):
+class LinkPreviewMediumThumbnailView(grok.View):
     grok.context(IATLink)
-    grok.name("thumbnail_mediano")
+    grok.name("medium_thumbnail")
     grok.require("zope2.View")
 
     def render(self):
         link_api = getMultiAdapter((self.context, self.request),
                                        name="link_api")
-        thumb = link_api.get('thumbnail_mediano')
+        thumb = link_api.get('medium_thumbnail')
 
         if thumb:
             return thumb.index_html(self.request, self.request.RESPONSE)
@@ -64,15 +72,15 @@ class LinkPreviewThumbnailMedianoView(grok.View):
             return ''
 
 
-class LinkPreviewThumbnailGrandeView(grok.View):
+class LinkPreviewLargeThumbnailView(grok.View):
     grok.context(IATLink)
-    grok.name("thumbnail_grande")
+    grok.name("large_thumbnail")
     grok.require("zope2.View")
 
     def render(self):
         link_api = getMultiAdapter((self.context, self.request),
                                        name="link_api")
-        thumb = link_api.get('thumbnail_grande')
+        thumb = link_api.get('large_thumbnail')
 
         if thumb:
             return thumb.index_html(self.request, self.request.RESPONSE)
@@ -105,45 +113,49 @@ class LinkControl(grok.View):
     def update_local_data(self, element):
         annotations = IAnnotations(element)
         video_api = getUtility(IVideoAPI)
-        json = video_api.get_json(element.remoteUrl)
+        url = element.remoteUrl
+        json = video_api.get_json(url)
 
         if json:
-            thumb_peq = json.get('thumbnail_pequeno', None)
-            thumb_med = json.get('thumbnail_mediano', None)
-            thumb_gde = json.get('thumbnail_grande', None)
+            thumb_small = video_api.get_video_thumb(url, 'small', json)
+            thumb_med = video_api.get_video_thumb(url, 'medium', json)
+            thumb_large = video_api.get_video_thumb(url, 'large', json)
+
             archivo_url = json.get('archivo_url', None)
             audio_url = json.get('audio_url', None)
             titulo = json.get('titulo', None)
             descripcion = json.get('descripcion', None)
             slug = json.get('slug', None)
 
-            if thumb_peq:
-                data = urllib2.urlopen(thumb_peq)
-                img = Image('thumbnail_pequeno', 'Thumbnail pequeno', data.read())
-                annotations['thumbnail_pequeno'] = img
+            if thumb_small:
+                data = urllib2.urlopen(thumb_small)
+                img = Image('small_thumbnail', 'Small thumbnail', data.read())
+                annotations['small_thumbnail'] = img
             else:
                 try:
-                    del(annotations['thumbnail_pequeno'])
+                    del(annotations['small_thumbnail'])
                 except KeyError:
                     pass
 
             if thumb_med:
                 data = urllib2.urlopen(thumb_med)
-                img = Image('thumbnail_mediano', 'Thumbnail mediano', data.read())
-                annotations['thumbnail_mediano'] = img
+                img = Image('medium_thumbnail',
+                            'Medium thumbnail',
+                            data.read())
+                annotations['medium_thumbnail'] = img
             else:
                 try:
-                    del(annotations['thumbnail_mediano'])
+                    del(annotations['medium_thumbnail'])
                 except KeyError:
                     pass
 
-            if thumb_gde:
-                data = urllib2.urlopen(thumb_gde)
-                img = Image('thumbnail_grande', 'Thumbnail grande', data.read())
-                annotations['thumbnail_grande'] = img
+            if thumb_large:
+                data = urllib2.urlopen(thumb_large)
+                img = Image('large_thumbnail', 'Large thumbnail', data.read())
+                annotations['large_thumbnail'] = img
             else:
                 try:
-                    del(annotations['thumbnail_grande'])
+                    del(annotations['large_thumbnail'])
                 except KeyError:
                     pass
 
@@ -191,6 +203,29 @@ class LinkControl(grok.View):
 
     def render(self):
         return self
+
+
+class AddVideoToContext(grok.View):
+    grok.context(Interface)
+    grok.name("add-video-to-context")
+    grok.require("zope2.View")
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self, title, url):
+        title = title.strip()
+        url = url.strip()
+        normalizer = getUtility(IIDNormalizer)
+        id = normalizer.normalize(title)
+        if id not in self.context:
+            self.context.invokeFactory('Link', id, title=title, remoteUrl=url)
+        link = self.context[id]
+        notify(ObjectInitializedEvent(link))
+
+    def render(self):
+        return u"add-video-to-context"
 
 
 @grok.subscribe(IATLink, IObjectInitializedEvent)

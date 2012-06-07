@@ -147,7 +147,21 @@ class BrowserLayerTest(unittest.TestCase):
             self.assertEqual(result, url+i)
 
     def test_get_basic_clip_list(self):
-        self.fail()
+
+        result = self.video_api.get_basic_clip_list()
+        self.assertEqual(result,
+                         (u'http://multimedia.tlsur.net/api/clip/?'
+                           'detalle=basico'))
+
+        result = self.video_api.get_basic_clip_list(limit=10)
+        self.assertEqual(result,
+                         (u'http://multimedia.tlsur.net/api/clip/?'
+                           'limit=10&detalle=basico'))
+
+        result = self.video_api.get_basic_clip_list(offset=10, limit=10)
+        self.assertEqual(result,
+                         (u'http://multimedia.tlsur.net/api/clip/?'
+                           'limit=10&detalle=basico&offset=10'))
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

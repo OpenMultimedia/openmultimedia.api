@@ -35,7 +35,7 @@ class AddVideosWidget(BaseWidget):
 
         for entry in json:
             if entry['api_url']:
-                # This check shouldn't be eneded since all results should have
+                # This check shouldn't be needed since all results should have
                 # videos... but, just in case...
                 data.append(
                         {

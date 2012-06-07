@@ -201,7 +201,7 @@ class IAPISettings(Interface):
         title=_(u"Offset"),
         description=_(u"Specify the offset for pagination"),
         required=True,
-        default=u"offsset",
+        default=u"offset",
         )
 
     limit = schema.TextLine(

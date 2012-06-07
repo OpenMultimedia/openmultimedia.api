@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <layers>
- <layer name="telesur.api"
-    interface="telesur.api.interfaces.ITelesurAPILayer"
+ <layer name="openmultimedia.api"
+    interface="openmultimedia.api.interfaces.IOpenmultimediaAPILayer"
     remove="True" />
 </layers>

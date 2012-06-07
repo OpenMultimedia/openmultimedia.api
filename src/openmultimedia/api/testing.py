@@ -17,21 +17,19 @@ class TelesurPolicyFixture(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
         # Load ZCML
-        #import collective.formwidget.relationfield
-        #self.loadZCML(package=collective.formwidget.relationfield)
-        #import telesur.policy
-        #self.loadZCML(package=telesur.policy)
+        import collective.formwidget.relationfield
         import openmultimedia.api
+        self.loadZCML(package=collective.formwidget.relationfield)
         self.loadZCML(package=openmultimedia.api)
+
 
         # Install product and call its initialize() function
         #z2.installProduct(app, 'Products.CMFPlacefulWorkflow')
 
     def setUpPloneSite(self, portal):
         # Install into Plone site using portal_setup
-        #self.applyProfile(portal, 'telesur.policy:initial')
-        #self.applyProfile(portal, 'telesur.policy:default')
         self.applyProfile(portal, 'openmultimedia.api:default')
+
         # Set default workflow chains for tests
         #wf = getattr(portal, 'portal_workflow')
         #types = ('Folder', 'Topic')
