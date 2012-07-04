@@ -56,9 +56,12 @@ class IVideoAPI(Interface):
         widgets
         """
 
-    def get_widgets():
+    def get_widgets(widgets):
         """
-        XXX: This remains here as backwards compatibility
+        XXX: This remains here as backwards compatibility.
+             if widgets is "False", then return a list of videos.
+             if widgets is "True", then return a list of widgets.
+             Default is "True"
         """
 
     def get_video_thumb(url, thumb_size, json):
@@ -77,6 +80,24 @@ class IVideoAPI(Interface):
         """
         Return a URL used to get a basic video list, with optional offset and
         limit parameters for pagination
+        """
+
+    def get_latest_videos_from_section(section, limit):
+        """
+        This method will mimic how "get_latest_from_section_video_widget"
+        mthod works, but, instead of getting the URL to get the widgets, it
+        will return a JSON containing the videos URL, to be used locally
+        with any video player.
+        Optionally, you can specify the limit of videos to be returned
+        """
+
+    def get_videos_most_seen(moments, limit):
+        """
+        This method will mimic how "get_videos_most_seen_widgets" mthod works,
+        but, instead of getting the URL to get the widgets, it will return a
+        list of JSON containing the videos URL, to be used locally with any
+        video player.
+        Optionally, you can specify the limit of videos to be returned
         """
 
 
@@ -131,7 +152,7 @@ class IAPISettings(Interface):
         title=_(u"Most seen video widget"),
         description=_(u"A widget for the videos most seen"),
         required=True,
-        default=u"http://multimedia.telesurtv.net/media/video/cmswidgets/cmswidgets.html?widget=mas_vistos",
+        default=u"http://multimedia.telesurtv.net/media/video/cmswidgets/videos.html?widget=mas_vistos",
         )
 
     latest_from_section_widget = schema.TextLine(
@@ -216,4 +237,32 @@ class IAPISettings(Interface):
         description=_(u"Specify the level of info to retrieve"),
         required=True,
         default=u"detalle",
+        )
+
+    video_type = schema.TextLine(
+        title=_(u"Video type"),
+        description=_(u"Specify the type of the video"),
+        required=True,
+        default=u"tipo",
+        )
+
+    video_region = schema.TextLine(
+        title=_(u"Video region"),
+        description=_(u"Specify the region of the video"),
+        required=True,
+        default=u"region",
+        )
+
+    video_category = schema.TextLine(
+        title=_(u"Video category"),
+        description=_(u"Specify the category of the video"),
+        required=True,
+        default=u"category",
+        )
+
+    video_order = schema.TextLine(
+        title=_(u"Order videos"),
+        description=_(u"Specify the order of the returned videos"),
+        required=True,
+        default=u"order",
         )

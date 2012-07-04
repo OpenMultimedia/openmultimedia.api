@@ -117,9 +117,6 @@ class VideoAPI(object):
 
         return widgets
 
-    def get_widgets(self):
-        return self.get_videos_most_seen_widgets(['today', 'week', 'month'])
-
     def get_video_thumb(self, url, thumb_size='small', json=None):
         registry = getUtility(IRegistry)
         records = registry.forInterface(IAPISettings)
@@ -185,3 +182,123 @@ class VideoAPI(object):
         base_url += params
 
         return base_url
+
+    def get_latest_videos_from_section(self, section, limit=4):
+        registry = getUtility(IRegistry)
+        records = registry.forInterface(IAPISettings)
+
+        url_base = records.url_base
+        video_api = records.video_api
+
+        base_url = "%s%s" % (url_base, video_api)
+
+        limit_param = records.limit
+        details_param = records.details
+
+        video_type = records.video_type
+        video_region = records.video_region
+        video_category = records.video_category
+
+        # Ask for news, with basic set of results, and limiting results to 4
+        params = {limit_param: limit,
+                  details_param: 'basico',
+                  video_type: 'noticia'}
+
+        # Mimic the cmswidgets/controllers/ultimos_seccion_controller.js
+        # functionality
+        if section == 'latinoamerica':
+            params[video_region] = 'america-latina'
+        elif section == 'vuelta-al-mundo':
+            params[video_region] = 'excepto__america-latina'
+        elif section == 'salud' or section == 'tecnologia':
+            params[video_category] = 'ciencia'
+        elif (section == 'deportes' or
+              section == 'ciencia' or
+              section == 'cultura'):
+            params[video_category] = section
+
+        params = urllib.urlencode(params)
+
+        base_url += params
+
+        result = urllib.urlopen(base_url).read()
+
+        return result
+
+    def get_videos_most_seen(self, moments, limit=5):
+        registry = getUtility(IRegistry)
+        records = registry.forInterface(IAPISettings)
+
+        url_base = records.url_base
+        video_api = records.video_api
+
+        base_url = "%s%s" % (url_base, video_api)
+
+        limit_param = records.limit
+        details_param = records.details
+        video_order = records.video_order
+
+        params = {limit_param: limit,
+                  details_param: 'basico',
+                  video_order: 'popularidad'}
+
+        params = urllib.urlencode(params)
+        base_url += params
+
+        time_filter_day = records.time_filter_day
+        time_filter_week = records.time_filter_week
+        time_filter_month = records.time_filter_month
+        time_filter_year = records.time_filter_year
+
+        widgets = []
+
+        if 'today' in moments:
+            url = "%s&amp;%s" % (base_url,time_filter_day)
+            result = urllib.urlopen(base_url).read()
+            result = json.loads(result)
+
+            widget = {'title': _(u"Most seen today"),
+                      'videos': result,
+                    }
+            widgets.append(widget)
+
+        if 'week' in moments:
+            url = "%s&amp;%s" % (base_url,time_filter_week)
+            result = urllib.urlopen(base_url).read()
+            result = json.loads(result)
+
+            widget = {'title': _(u"Most seen this week"),
+                      'videos': result,
+                    }
+            widgets.append(widget)
+
+        if 'month' in moments:
+            url = "%s&amp;%s" % (base_url,time_filter_month)
+            result = urllib.urlopen(base_url).read()
+            result = json.loads(result)
+
+            widget = {'title': _(u"Most seen this month"),
+                      'videos': result,
+                    }
+            widgets.append(widget)
+
+        if 'year' in moments:
+            url = "%s&amp;%s" % (base_url,time_filter_year)
+            result = urllib.urlopen(base_url).read()
+            result = json.loads(result)
+
+            widget = {'title': _(u"Most seen this year"),
+                      'videos': result,
+                    }
+            widgets.append(widget)
+
+        return json.dumps(widgets)
+
+    def get_widgets(self, widgets=True):
+        if widgets:
+            result = self.get_videos_most_seen_widgets(
+                                                    ['today', 'week', 'month'])
+        else:
+            result = self.get_videos_most_seen(['today', 'week', 'month'])
+
+        return result

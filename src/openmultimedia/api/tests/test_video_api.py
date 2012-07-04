@@ -47,19 +47,19 @@ class BrowserLayerTest(unittest.TestCase):
 
     def test_get_widgets(self):
         today = {'url': (u'http://multimedia.telesurtv.net/media/video/'
-                          'cmswidgets/cmswidgets.html?widget=mas_vistos'
+                          'cmswidgets/videos.html?widget=mas_vistos'
                           '&amp;tiempo=dia'),
                  'title': u'Most seen today'}
         week = {'url': (u'http://multimedia.telesurtv.net/media/video/'
-                          'cmswidgets/cmswidgets.html?widget=mas_vistos'
+                          'cmswidgets/videos.html?widget=mas_vistos'
                           '&amp;tiempo=semana'),
                  'title': u'Most seen this week'}
         month = {'url': (u'http://multimedia.telesurtv.net/media/video/'
-                          'cmswidgets/cmswidgets.html?widget=mas_vistos'
+                          'cmswidgets/videos.html?widget=mas_vistos'
                           '&amp;tiempo=mes'),
                  'title': u'Most seen this month'}
         year = {'url': (u'http://multimedia.telesurtv.net/media/video/'
-                          'cmswidgets/cmswidgets.html?widget=mas_vistos'
+                          'cmswidgets/videos.html?widget=mas_vistos'
                           '&amp;tiempo=ano'),
                  'title': u'Most seen this year'}
 
@@ -134,7 +134,7 @@ class BrowserLayerTest(unittest.TestCase):
         self.assertEqual(results, (u"http://media.tlsur.net/cache/10/f9/"
                                     "10f910a49e6a261276f90d920063eede.jpg"))
 
-    def test_get_section_last_videos(self):
+    def test_get_section_latest_videos_widget(self):
 
         url = ("http://multimedia.telesurtv.net/media/video/cmswidgets/videos"
                ".html?widget=ultimos_seccion&amp;seccion_plone=")
@@ -143,25 +143,110 @@ class BrowserLayerTest(unittest.TestCase):
                            'ciencia', 'cultura', 'salud', 'tecnologia']
 
         for i in categories_list:
-            result = self.video_api.get_latest_from_section_video_widget(i)
-            self.assertEqual(result, url+i)
+            results = self.video_api.get_latest_from_section_video_widget(i)
+            self.assertEqual(results, url+i)
 
     def test_get_basic_clip_list(self):
 
-        result = self.video_api.get_basic_clip_list()
-        self.assertEqual(result,
+        results = self.video_api.get_basic_clip_list()
+        self.assertEqual(results,
                          (u'http://multimedia.tlsur.net/api/clip/?'
                            'detalle=basico'))
 
-        result = self.video_api.get_basic_clip_list(limit=10)
-        self.assertEqual(result,
+        results = self.video_api.get_basic_clip_list(limit=10)
+        self.assertEqual(results,
                          (u'http://multimedia.tlsur.net/api/clip/?'
                            'limit=10&detalle=basico'))
 
-        result = self.video_api.get_basic_clip_list(offset=10, limit=10)
-        self.assertEqual(result,
+        results = self.video_api.get_basic_clip_list(offset=10, limit=10)
+        self.assertEqual(results,
                          (u'http://multimedia.tlsur.net/api/clip/?'
                            'limit=10&detalle=basico&offset=10'))
+
+    def test_get_section_latest_videos_widget(self):
+
+        categories_list = ['latinoamerica', 'vuelta-al-mundo', 'deportes',
+                           'ciencia', 'cultura', 'salud', 'tecnologia']
+
+        for i in categories_list:
+            results = self.video_api.get_latest_videos_from_section(i)
+            results = json.loads(results)
+            self.assertEqual(len(results), 4)
+            self.assertEqual(type(results), list)
+
+    def test_get_most_seen_videos(self):
+        results = self.video_api.get_videos_most_seen(['today'])
+        results = json.loads(results)
+
+        self.assertEqual(len(results), 1)
+        self.assertEqual(type(results), list)
+        for i in results:
+            self.assertEqual(len(i['videos']), 5)
+
+        results = self.video_api.get_videos_most_seen(['today',
+                                                       'week'])
+
+        results = json.loads(results)
+
+        self.assertEqual(len(results), 2)
+        self.assertEqual(type(results), list)
+        for i in results:
+            self.assertEqual(len(i['videos']), 5)
+
+
+        results = self.video_api.get_videos_most_seen(['today',
+                                                       'week',
+                                                       'month'])
+
+        results = json.loads(results)
+
+        self.assertEqual(len(results), 3)
+        self.assertEqual(type(results), list)
+        for i in results:
+            self.assertEqual(len(i['videos']), 5)
+
+        results = self.video_api.get_videos_most_seen(['today',
+                                                       'week',
+                                                       'month',
+                                                       'year'])
+
+        results = json.loads(results)
+
+        self.assertEqual(len(results), 4)
+        self.assertEqual(type(results), list)
+        for i in results:
+            self.assertEqual(len(i['videos']), 5)
+
+        results = self.video_api.get_videos_most_seen(['week',
+                                                       'month',
+                                                       'year'])
+
+        results = json.loads(results)
+
+        self.assertEqual(len(results), 3)
+        self.assertEqual(type(results), list)
+        for i in results:
+            self.assertEqual(len(i['videos']), 5)
+
+        results = self.video_api.get_videos_most_seen(['month',
+                                                       'year'])
+
+        results = json.loads(results)
+
+        self.assertEqual(len(results), 2)
+        self.assertEqual(type(results), list)
+        for i in results:
+            self.assertEqual(len(i['videos']), 5)
+
+        results = self.video_api.get_videos_most_seen(['year'])
+
+        results = json.loads(results)
+
+        self.assertEqual(len(results), 1)
+        self.assertEqual(type(results), list)
+        for i in results:
+            self.assertEqual(len(i['videos']), 5)
+
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
