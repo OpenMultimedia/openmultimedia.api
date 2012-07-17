@@ -2,6 +2,6 @@
 <metadata>
  <version>1</version>
  <dependencies>
-  <dependency>profile-collective.formwidget.relationfield:default</dependency>
+  <dependency>profile-collective.z3cform.widgets:default</dependency>
  </dependencies>
 </metadata>
