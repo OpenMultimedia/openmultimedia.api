@@ -16,6 +16,7 @@ from DateTime import DateTime
 
 from openmultimedia.api.interfaces import IVideoAPI
 
+
 class AddVideosWidget(BaseWidget):
     display_template = ViewPageTemplateFile('templates/add_videos_widget.pt')
     recurse_template = ViewPageTemplateFile('templates/recurse_videos_widget.pt')

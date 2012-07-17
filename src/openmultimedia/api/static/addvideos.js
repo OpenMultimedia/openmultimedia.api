@@ -1,7 +1,7 @@
 
 function addVideoToContainer(video){
-    title = video.text();
-    url = video.attr('href');
+    var title = video.text();
+    var url = video.attr('href');
     if ( title != "" && url !== undefined ){
         jQuery.ajax({type: 'POST',
                         url: '@@add-video-to-context',
@@ -19,7 +19,7 @@ if(jQuery) (function($){
 
     $.extend($.fn, {
         contentTreeAddVideos: function() {
-            $("#content-droppable > li > a.ui-widget-content").each(function () {
+            $(".ui-droppable > li > a").each(function () {
                 addVideoToContainer($(this));
                 removeVideoFromDroppable($(this));
             });
