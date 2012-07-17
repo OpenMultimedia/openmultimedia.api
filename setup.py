@@ -43,7 +43,7 @@ setup(name='openmultimedia.api',
         'zope.interface',
         'zope.component',
         'rwproperty',
-        'collective.formwidget.relationfield',
+        'collective.z3cform.widgets',
         ],
       extras_require={
         'test': ['plone.app.testing'],

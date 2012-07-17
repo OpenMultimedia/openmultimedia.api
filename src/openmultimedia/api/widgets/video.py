@@ -8,8 +8,8 @@ from zope.interface import implementer
 import z3c.form.interfaces
 import z3c.form.widget
 
-from collective.formwidget.relationfield.widget \
-    import ContentRelationWidget as BaseWidget
+from collective.z3cform.widgets.multicontent_search_widget \
+    import MultiContentSearchWidget as BaseWidget
 
 from zope.i18n import translate
 from DateTime import DateTime
