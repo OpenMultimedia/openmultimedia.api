@@ -220,7 +220,7 @@ class AddVideoToContext(grok.View):
         normalizer = getUtility(IIDNormalizer)
         id = normalizer.normalize(title)
         if id not in self.context:
-            self.context.invokeFactory('Link', id, title=title, remoteUrl=url)
+            self.context.invokeFactory('openmultimedia.contenttypes.video', id, title=title, remote_url=url)
         link = self.context[id]
         notify(ObjectInitializedEvent(link))
 
