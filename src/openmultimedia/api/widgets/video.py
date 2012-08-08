@@ -169,7 +169,8 @@ class AddVideosWidget(BaseWidget):
         hideLoadSpinner();
         }
 
-        function filterVideos(){
+        function filterVideos() {
+        $("#related-content-videos").empty();
         showLoadSpinner();
         var query = document.getElementById('form-widgets-search-videos').value;
         $("ul#related-content-videos").load('%(url)s',{'query':query}, afterLoad);

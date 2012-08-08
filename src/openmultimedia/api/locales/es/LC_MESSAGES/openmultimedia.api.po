@@ -89,19 +89,19 @@ msgstr "Límite"
 msgid "Medium thumbnail"
 msgstr "Imagen mediano"
 
-#: openmultimedia/api/video_utility.py:104
+#: openmultimedia/api/video_utility.py:119
 msgid "Most seen this month"
 msgstr "Más vistos este mes"
 
-#: openmultimedia/api/video_utility.py:96
+#: openmultimedia/api/video_utility.py:111
 msgid "Most seen this week"
 msgstr "Más vistos esta semana"
 
-#: openmultimedia/api/video_utility.py:112
+#: openmultimedia/api/video_utility.py:127
 msgid "Most seen this year"
 msgstr "Más vistos este año"
 
-#: openmultimedia/api/video_utility.py:88
+#: openmultimedia/api/video_utility.py:103
 msgid "Most seen today"
 msgstr "Más vistos hoy"
 
@@ -208,15 +208,15 @@ msgstr "URL base del widget de video"
 #. Default: "Browse for videos"
 #: openmultimedia/api/widgets/templates/add_videos_widget.pt:17
 msgid "heading_contenttree_browse"
-msgstr ""
+msgstr "Buscar Videos"
 
 #. Default: "Save"
 #: openmultimedia/api/widgets/templates/add_videos_widget.pt:57
 msgid "label_contenttree_add"
-msgstr ""
+msgstr "Guardar"
 
 #. Default: "Cancel"
 #: openmultimedia/api/widgets/templates/add_videos_widget.pt:58
 msgid "label_contenttree_cancel"
-msgstr ""
+msgstr "Cancelar"
 

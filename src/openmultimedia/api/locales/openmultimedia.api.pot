@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2012-08-08 13:59+0000\n"
+"POT-Creation-Date: 2012-08-08 14:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,19 +93,19 @@ msgstr ""
 msgid "Medium thumbnail"
 msgstr ""
 
-#: openmultimedia/api/video_utility.py:104
+#: openmultimedia/api/video_utility.py:119
 msgid "Most seen this month"
 msgstr ""
 
-#: openmultimedia/api/video_utility.py:96
+#: openmultimedia/api/video_utility.py:111
 msgid "Most seen this week"
 msgstr ""
 
-#: openmultimedia/api/video_utility.py:112
+#: openmultimedia/api/video_utility.py:127
 msgid "Most seen this year"
 msgstr ""
 
-#: openmultimedia/api/video_utility.py:88
+#: openmultimedia/api/video_utility.py:103
 msgid "Most seen today"
 msgstr ""
 
