@@ -218,7 +218,6 @@ class AddVideoToContext(grok.View):
     def __call__(self, title, url):
         title = title.strip()
         url = url.strip()
-        import pdb; pdb.set_trace()
         normalizer = getUtility(IIDNormalizer)
         id = normalizer.normalize(title)
         if id not in self.context:

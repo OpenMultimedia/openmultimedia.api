@@ -24,7 +24,6 @@ if(jQuery) (function($){
             $(".ui-droppable > li > a").each(function () {
                 data_url.push($(this).attr('href'));
                 data_title.push($(this).text());
-                //addVideoToContainer($(this));
                 removeVideoFromDroppable($(this));
             });
             jQuery.ajax({type: 'POST',
