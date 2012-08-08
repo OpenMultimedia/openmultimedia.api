@@ -18,8 +18,9 @@
             <div id="relatedWidget-search">
                 <input id="form-widgets-search-videos" 
                        class="text-widget textline-field kssattr-formname-++add++collective.nitf.content kssattr-fieldname-form.widgets.search kssattr-fieldname-form.widgets.IRelatedItems.relatedItems.widgets.query kssattr-fieldset-0" 
-                       type="text" /> 
-                <input type="submit" value="Buscar" onclick="filterVideos(); return false;">
+                       type="text"  /> 
+                <input type="submit" value="Search" onclick="filterVideos(); return false;" 
+                        i18n:attributes="value"/>
                 <img tal:attributes="src string:${portal_url}/spinner.gif"
                      alt=""
                      id="videos-loading-spinner"
@@ -29,11 +30,14 @@
         <div class="relatedWidgetContainer">
               
             <div class="relatedWidget">
-                
+                <img tal:attributes="src string:${portal_url}/spinner.gif"
+                     alt=""
+                     id="videos-loading-spinner-add"
+                     style="display:none"/>
                 <ul class="navTree navTreeLevel0 from" id="related-content-videos">
                     <!--<li tal:replace="structure python:view.render_tree(limit=10)" />-->
                 </ul>
-                <ul class="navTree navTreeLevel0 recieve">
+                <ul class="navTree navTreeLevel0 recieve" id="ready-related-content-videos">
                   <li tal:replace="structure view/render_selected" />
                 </ul>
 
@@ -50,7 +54,7 @@
             </div>
         </div>
         <div class="contenttreeWindowActions">
-            <input class="context contentTreeAddVideos" type="button" i18n:attributes="value label_contenttree_add" value="Add"/> 
+            <input class="context contentTreeAddVideos" type="button" i18n:attributes="value label_contenttree_add" value="Save"/> 
             <input class="standalone contentTreeCancel" i18n:attributes="value label_contenttree_cancel" type="button" value="Cancel"/>
         </div>
     </div>

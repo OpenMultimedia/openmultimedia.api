@@ -16,6 +16,7 @@ from zope.interface import Interface
 
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 
+from Products.CMFCore.utils import getToolByName
 from Products.ATContentTypes.interfaces.link import IATLink
 
 from Products.Archetypes.event import ObjectInitializedEvent
@@ -217,6 +218,7 @@ class AddVideoToContext(grok.View):
     def __call__(self, title, url):
         title = title.strip()
         url = url.strip()
+        import pdb; pdb.set_trace()
         normalizer = getUtility(IIDNormalizer)
         id = normalizer.normalize(title)
         if id not in self.context:
@@ -226,6 +228,60 @@ class AddVideoToContext(grok.View):
 
     def render(self):
         return u"add-video-to-context"
+
+class ManageVideoInContext(grok.View):
+    grok.context(Interface)
+    grok.name("manage-video-in-context")
+    grok.require("zope2.View")
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        titles = self.request.get('titles[]', None)
+        urls = self.request.get('urls[]', None)
+        videos_brain = self.get_videos()
+        videos = [video.getObject().video_url for video in self.get_videos()]
+        normalizer = getUtility(IIDNormalizer)
+        for index, video in enumerate(videos):
+            if video not in urls:
+                video_id = videos_brain[index].id
+                self.context.manage_delObjects(videos_brain[index].id)
+        if urls:
+            for index, url in enumerate(urls):
+                url_s = url.strip()
+                if url_s not in videos:
+                    title = titles[index].strip()
+                    id = normalizer.normalize(title)
+                    if id not in self.context:
+                        self.context.invokeFactory('openmultimedia.contenttypes.video', id, title=title, remote_url=url_s)
+                    link = self.context[id]
+                    notify(ObjectInitializedEvent(link))
+                    
+    
+    def get_videos(self):
+        """ Return a list of brains inside the NITF object.
+        """
+        catalog = getToolByName(self.context, 'portal_catalog')
+        path = '/'.join(self.context.getPhysicalPath())
+        brains = catalog(Type=['Video'], path=path,
+                         sort_on='getObjPositionInParent')
+
+        return brains
+    
+    def render(self):
+        return ""
+
+
+        # title = title.strip()
+        #         url = url.strip()
+        #         normalizer = getUtility(IIDNormalizer)
+        #         id = normalizer.normalize(title)
+        #         if id not in self.context:
+        #             self.context.invokeFactory('openmultimedia.contenttypes.video', id, title=title, remote_url=url)
+        #         link = self.context[id]
+        #         notify(ObjectInitializedEvent(link))
 
 
 @grok.subscribe(IATLink, IObjectInitializedEvent)

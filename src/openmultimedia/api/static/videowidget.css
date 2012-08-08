@@ -1,0 +1,42 @@
+/*
+VIDEO WIDGET
+*/
+
+.video-widget-date {
+    color: #444444;
+    font-size: 12px;
+    line-height: 12px;
+}
+
+.video-widget-title {
+    color: #444444;
+    font-weight: bold;
+    max-width: 100%;
+    font-size: 12px;
+    line-height: 15px;
+}
+
+.video-widget-description {
+    height: 37px;
+    max-width: 400px;
+    overflow-y: hidden;
+    color: #444444;
+    font-size: 12px;
+    line-height: 12px;
+}
+
+#ready-related-content-videos .video-widget-thumb,
+#related-content-videos .video-widget-thumb {
+    float: left;
+}
+
+#videos-loading-spinner {
+    position: absolute;
+    top: 50%;
+}
+
+#videos-loading-spinner-add {
+    position: absolute;
+    top: 50%;
+    right: 25%;
+}

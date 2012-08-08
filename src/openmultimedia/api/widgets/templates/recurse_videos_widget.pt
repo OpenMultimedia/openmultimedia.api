@@ -17,19 +17,21 @@
                           li_class            string:${li_folder_class}${li_selectable_class}${li_collapsed_class}">
             <li tal:attributes="class string: draggable navTreeItem visualNoMarker${li_class}">
 
-                <span tal:content="date">Fecha</span>
                 <a tal:attributes="href video_url;
                                    rel level;
                                    title title;">
-                <img tal:attributes="src video_thumb" />
-                <span tal:content="title">Selected Item Title</span>
+                <img class="video-widget-thumb" width="120" tal:attributes="src video_thumb" />
+                <div tal:content="date" class="video-widget-date" i18n:translate="">Fecha</div>
+                <div class="video-widget-title" tal:content="title" i18n:translate="">Selected Item Title</div>
+                <div class="video-widget-description" tal:content="description" i18n:translate="">Selected Item Description</div>
+                <div style="clear:both"></div>
                 </a>
             </li>
         </tal:defs>
     </tal:navitem>
     <div class="show_more" id="show-more-results">
-        <a tal:attributes="onclick string:appendMoreVideos(${offset});">
-           Mostrar más
+        <a tal:attributes="onclick string:appendMoreVideos(${offset});" i18n:translate="">
+           Show More
         </a>
     </div>
 </tal:master>

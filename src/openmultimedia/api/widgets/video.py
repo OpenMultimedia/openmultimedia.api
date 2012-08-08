@@ -4,15 +4,19 @@ from zope.component import getUtility
 from zope.component import getMultiAdapter
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.interface import implementer
+from zope.i18n import translate
 
 import z3c.form.interfaces
 import z3c.form.widget
 
+from DateTime import DateTime
+
+from Products.CMFCore.utils import getToolByName
+
+from plone.app.layout.navigation.interfaces import INavtreeStrategy
+
 from collective.z3cform.widgets.multicontent_search_widget \
     import MultiContentSearchWidget as BaseWidget
-
-from zope.i18n import translate
-from DateTime import DateTime
 
 from openmultimedia.api.interfaces import IVideoAPI
 
@@ -20,6 +24,7 @@ from openmultimedia.api.interfaces import IVideoAPI
 class AddVideosWidget(BaseWidget):
     display_template = ViewPageTemplateFile('templates/add_videos_widget.pt')
     recurse_template = ViewPageTemplateFile('templates/recurse_videos_widget.pt')
+    selected_template = ViewPageTemplateFile('templates/related_search.pt')
 
 
     def render_tree(self, query=None, limit=10, offset=0):
@@ -31,7 +36,7 @@ class AddVideosWidget(BaseWidget):
 
         if query:
             url = "%s&texto=%s" % (url, query)
-
+        
         json = video_api.get_json(url)
 
         for entry in json:
@@ -202,6 +207,36 @@ class AddVideosWidget(BaseWidget):
         }
 
         """ % dict(url=url)
+    
+    def render_selected(self):
+        portal_state = getMultiAdapter((self.context, self.request),
+                                         name=u'plone_portal_state')
+        portal = portal_state.portal()
+        strategy = getMultiAdapter((portal, self), INavtreeStrategy)
+
+        catalog = getToolByName(self.context, 'portal_catalog')
+        items = []
+        
+        videos = self.get_videos()
+        for brain in videos:
+            video = brain.getObject()
+            items.append(strategy.decoratorFactory({'item':brain,
+                'video_url': video.video_url,
+                'video_thumb': video.image.filename,
+                'date': video.created().strftime("%d/%m/%Y")}))
+
+        return self.selected_template(children=items, level=1)
+
+    def get_videos(self):
+        """ Return a list of brains inside the NITF object.
+        """
+        catalog = getToolByName(self.context, 'portal_catalog')
+        path = '/'.join(self.context.getPhysicalPath())
+        brains = catalog(Type=['Video'], path=path,
+                         sort_on='getObjPositionInParent')
+
+        return brains
+    
 
 
 @implementer(z3c.form.interfaces.IFieldWidget)
