@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import urllib
+import urllib2
 import json
 import re
+import logging
 
 from zope.component import getUtility
 
@@ -15,6 +17,9 @@ from openmultimedia.api.interfaces import IVideoAPI
 from openmultimedia.api import _
 
 
+logger = logging.getLogger(PROJECTNAME)
+
+
 class VideoAPI(object):
     """
     This utility will handle the communication between the multimedia system
@@ -24,15 +29,25 @@ class VideoAPI(object):
     implements(IVideoAPI)
 
     def get_json(self, url):
-        result = None
+        result = []
         if url:
             try:
-                result = json.load(urllib.urlopen(url))
-            except ValueError:
-                result = None
+                data = urllib2.urlopen(url, timeout=6)
+            except urllib2.HTTPError:
+                logger.info("An error ocurred when trying to access %s" % url)
+                data = None
+            except urllib2.URLError:
+                logger.info("Timeout when trying to access %s" % url)
+                data = None
 
-            if result and 'Error' in result:
-                result = None
+            if data:
+                try:
+                    result = json.load(data)
+                except ValueError:
+                    result = []
+
+                if result and 'Error' in result:
+                    result = []
 
         return result
 

@@ -38,7 +38,7 @@ class AddVideosWidget(BaseWidget):
             url = "%s&texto=%s" % (url, query)
         
         json = video_api.get_json(url)
-
+        
         for entry in json:
             if entry['api_url']:
                 # This check shouldn't be needed since all results should have
