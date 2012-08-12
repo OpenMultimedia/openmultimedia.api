@@ -15,6 +15,50 @@ function addVideoToContainer(video){
     }
 }
 
+
+$(function() {
+		$( "#relatedVideos ul.from .navTreeItem").liveDraggable({ containment: ".relatedVideos",  scroll: false, helper: "clone"}); 
+        $("#relatedVideos ul.recieve").droppable({
+        			activeClass: "ui-state-default",
+        			hoverClass: "ui-state-hover",
+        			drop: function(event, ui) {     
+        			  var children = $(this).children();
+        			  var i = 0;
+        			  var exists = false;
+        			  for(i=0; i<children.length; i++) {
+                        if (ui.draggable.attr('uid') !== undefined ){
+            			    if(ui.draggable.attr('uid') == $(children[i]).attr('uid')){
+            			      exists = true;
+            			    }
+                        }
+                        if ($("a",ui.draggable).length ){
+            			    if($("a",ui.draggable).attr('href') == $("a",$(children[i])).attr('href')){
+            			      exists = true;
+            			    }
+                        }
+        			  }
+        			  if(!exists) {
+        			    var clon = ui.draggable.clone()
+        			    var children = $("ul",clon);
+        			    if(children.length) {
+        			      children.remove();
+        			    }
+        			    clon.append("<div class='related-item-close'>X</div>");
+        			    clon.appendTo( this );
+        			  }	
+        			}
+        		}).sortable();
+    $("#relatedVideos ul.recieve li").append("<div class='related-item-close'>X</div>");
+    $("#relatedVideos ul.recieve li a").live("click", function(e) {
+      e.preventDefault();
+      return false;
+    })
+    $(".related-item-close").live("click", function() {
+        $(this).parent().remove();
+    })
+
+});
+
 if(jQuery) (function($){
     $.extend($.fn, {
         contentTreeAddVideos: function() {
