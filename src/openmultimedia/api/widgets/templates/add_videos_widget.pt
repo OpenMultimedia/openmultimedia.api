@@ -16,16 +16,19 @@
         <div class="contenttreeWindowHeader">
             <h2 i18n:translate="heading_contenttree_browse">Browse for videos</h2>
             <div id="relatedWidget-search">
+                <div class="search-container">
                 <input id="form-widgets-search-videos" 
                        class="text-widget textline-field kssattr-formname-++add++collective.nitf.content kssattr-fieldname-form.widgets.search kssattr-fieldname-form.widgets.IRelatedItems.relatedItems.widgets.query kssattr-fieldset-0" 
                        type="text"  /> 
                 <input type="submit" value="Search" onclick="filterVideos(); return false;" 
-                        i18n:attributes="value"/>
-                <img tal:attributes="src string:${portal_url}/spinner.gif"
-                     alt=""
-                     id="videos-loading-spinner"
-                     style="display:none"/>
+                        i18n:attributes="value" id="form-widgets-search-videos-submit"/>
+                </div>
+                
             </div>
+            <img tal:attributes="src string:${portal_url}/spinner.gif"
+                 alt=""
+                 id="videos-loading-spinner"
+                 style="display:none"/>
         </div>
         <div class="relatedWidgetContainer">
               
@@ -34,6 +37,16 @@
                      alt=""
                      id="videos-loading-spinner-add"
                      style="display:none"/>
+                     <div class="from-head">
+                         <div class="padding-head">
+                         Videos Recientes
+                         </div>
+                     </div>
+                     <div class="recieve-head">
+                         <div class="padding-head">
+                         Videos Relacionados
+                         </div>
+                     </div>
                 <ul class="navTree navTreeLevel0 from" id="related-content-videos">
                     <!--<li tal:replace="structure python:view.render_tree(limit=10)" />-->
                 </ul>

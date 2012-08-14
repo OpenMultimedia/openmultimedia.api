@@ -15,8 +15,8 @@ function addVideoToContainer(video){
     }
 }
 
-
 $(function() {
+        $("#form-widgets-IAddableVideos-relatedVideos-contenttree-window").draggable();
 		$( "#relatedVideos ul.from .navTreeItem").liveDraggable({ containment: ".relatedVideos",  scroll: false, helper: "clone"}); 
         $("#relatedVideos ul.recieve").droppable({
         			activeClass: "ui-state-default",
@@ -60,6 +60,7 @@ $(function() {
 });
 
 if(jQuery) (function($){
+   
     $.extend($.fn, {
         contentTreeAddVideos: function() {
             var data_url = []

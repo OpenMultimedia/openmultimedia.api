@@ -163,10 +163,24 @@ class AddVideosWidget(BaseWidget):
         function hideLoadSpinner() {
         $("#videos-loading-spinner").css("display", "none");
         }
+        
+        function infiniteScrollVideo() {
+            var opts = {context:'#related-content-videos', offset: '%(perc)s'};
+            var $footer = $("#related-content-videos #show-more-results");
+            $footer.waypoint(function(event, direction) {
+            $footer.waypoint('remove');
+            $footer.waypoint('remove');
+            if(direction == 'down') {
+                $("#show-more-results a").trigger("click");
+                console.log('heey');
+            }
+            }, opts);
+        }
 
         function afterLoad() {
         unbindClickEvent();
         hideLoadSpinner();
+        infiniteScrollVideo();
         }
 
         function filterVideos() {
@@ -203,11 +217,12 @@ class AddVideosWidget(BaseWidget):
                                 hideMoreSpinner();
                                 $("ul#related-content-videos").append(results);
                                 unbindClickEvent();
+                                infiniteScrollVideo();
                                 }
                             });
         }
 
-        """ % dict(url=url)
+        """ % dict(url=url, perc="100%")
     
     def render_selected(self):
         portal_state = getMultiAdapter((self.context, self.request),
