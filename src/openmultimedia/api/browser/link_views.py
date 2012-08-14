@@ -253,10 +253,11 @@ class ManageVideoInContext(grok.View):
                 if url_s not in videos:
                     title = titles[index].strip()
                     id = normalizer.normalize(title)
-                    if id not in self.context:
-                        self.context.invokeFactory('openmultimedia.contenttypes.video', id, title=title, remote_url=url_s)
-                    link = self.context[id]
-                    notify(ObjectInitializedEvent(link))
+                    if id:
+                        if id not in self.context:
+                            self.context.invokeFactory('openmultimedia.contenttypes.video', id, title=title, remote_url=url_s)
+                        link = self.context[id]
+                        notify(ObjectInitializedEvent(link))
                     
     
     def get_videos(self):
