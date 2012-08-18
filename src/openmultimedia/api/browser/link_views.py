@@ -25,6 +25,7 @@ from Products.Archetypes.interfaces import IObjectInitializedEvent
 from openmultimedia.api.interfaces import IVideoAPI
 
 
+# XXX: do we still need this?
 class LinkApi(grok.View):
     grok.context(IATLink)
     grok.name("link_api")
@@ -228,6 +229,7 @@ class AddVideoToContext(grok.View):
     def render(self):
         return u"add-video-to-context"
 
+
 class ManageVideoInContext(grok.View):
     grok.context(Interface)
     grok.name("manage-video-in-context")
@@ -258,8 +260,7 @@ class ManageVideoInContext(grok.View):
                             self.context.invokeFactory('openmultimedia.contenttypes.video', id, title=title, remote_url=url_s)
                         link = self.context[id]
                         notify(ObjectInitializedEvent(link))
-                    
-    
+
     def get_videos(self):
         """ Return a list of brains inside the NITF object.
         """
@@ -269,10 +270,9 @@ class ManageVideoInContext(grok.View):
                          sort_on='getObjPositionInParent')
 
         return brains
-    
+
     def render(self):
         return ""
-
 
         # title = title.strip()
         #         url = url.strip()
@@ -284,7 +284,8 @@ class ManageVideoInContext(grok.View):
         #         notify(ObjectInitializedEvent(link))
 
 
-@grok.subscribe(IATLink, IObjectInitializedEvent)
+# XXX: unregister subscriber because is causing issues with standard links
+#@grok.subscribe(IATLink, IObjectInitializedEvent)
 def update_local_data(obj, event):
     request = obj.REQUEST
     link_control = getMultiAdapter((obj, request), name="link-control")
