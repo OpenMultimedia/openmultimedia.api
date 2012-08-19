@@ -240,8 +240,12 @@ class ManageVideoInContext(grok.View):
         self.request = request
 
     def __call__(self):
-        titles = self.request.get('titles[]', None)
-        urls = self.request.get('urls[]', None)
+        titles = self.request.get('titles[]', [])
+        urls = self.request.get('urls[]', [])
+        if not isinstance(urls, list):
+            urls = [urls]
+        if not isinstance(titles, list):
+            titles = [titles]
         videos_brain = self.get_videos()
         videos = [video.getObject().video_url for video in self.get_videos()]
         normalizer = getUtility(IIDNormalizer)
@@ -249,7 +253,7 @@ class ManageVideoInContext(grok.View):
             if video not in urls:
                 video_id = videos_brain[index].id
                 self.context.manage_delObjects(videos_brain[index].id)
-        if urls:
+        if urls and titles and len(urls) == len(titles):
             for index, url in enumerate(urls):
                 url_s = url.strip()
                 if url_s not in videos:
