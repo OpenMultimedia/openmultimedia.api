@@ -29,9 +29,9 @@
             </li>
         </tal:defs>
     </tal:navitem>
-    <div class="show_more" id="show-more-results">
+    <li class="show_more" id="show-more-results">
         <a tal:attributes="onclick string:appendMoreVideos(${offset});" i18n:translate="">
            Show More
         </a>
-    </div>
+    </li>
 </tal:master>
