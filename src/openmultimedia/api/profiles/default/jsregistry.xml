@@ -3,6 +3,6 @@
 
   <javascript id="++resource++openmultimedia.api/addvideos.js"
       cacheable="True" compression="none" cookable="True" enabled="True"
-      expression="" inline="False" />
+      expression="" inline="False" authenticated="True" />
 
 </object>
