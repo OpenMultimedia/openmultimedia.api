@@ -54,7 +54,7 @@
                   <li tal:replace="structure view/render_selected" />
                 </ul>
 
-                <div style="text-align:center;">
+                <div>
                     <img tal:attributes="src string:${portal_url}/spinner.gif"
                             alt=""
                             id="videos-more-spinner"

@@ -169,10 +169,8 @@ class AddVideosWidget(BaseWidget):
             var $footer = $("#related-content-videos #show-more-results");
             $footer.waypoint(function(event, direction) {
             $footer.waypoint('remove');
-            $footer.waypoint('remove');
             if(direction == 'down') {
                 $("#show-more-results a").trigger("click");
-                console.log('heey');
             }
             }, opts);
         }
