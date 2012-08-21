@@ -16,6 +16,7 @@ function addVideoToContainer(video){
 }
 
 $(function() {
+    if($("#relatedVideos").length) {
         $("#form-widgets-IAddableVideos-relatedVideos-contenttree-window").draggable();
 		$( "#relatedVideos ul.from .navTreeItem").liveDraggable({ containment: ".relatedVideos",  scroll: false, helper: "clone"}); 
         $("#relatedVideos ul.recieve").droppable({
@@ -55,7 +56,8 @@ $(function() {
     })
     $(".related-item-close").live("click", function() {
         $(this).parent().remove();
-    })
+    });
+}
 
 });
 
