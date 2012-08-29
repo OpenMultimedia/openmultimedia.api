@@ -198,6 +198,33 @@ class VideoAPI(object):
 
         return base_url
 
+    def get_news_clip_list(self, offset=None, limit=None):
+        registry = getUtility(IRegistry)
+        records = registry.forInterface(IAPISettings)
+
+        url_base = records.url_base
+        video_api = records.video_api
+
+        offset_param = records.offset
+        limit_param = records.limit
+        details_param = records.details
+
+        base_url = "%s%s" % (url_base, video_api)
+
+        params = {details_param: 'basico', 'tipo': 'noticia'}
+
+        if offset:
+            params[offset_param] = offset
+
+        if limit:
+            params[limit_param] = limit
+
+        params = urllib.urlencode(params)
+
+        base_url += params
+
+        return base_url
+
     def get_latest_videos_from_section(self, section, limit=4):
         registry = getUtility(IRegistry)
         records = registry.forInterface(IAPISettings)
