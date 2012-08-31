@@ -234,9 +234,11 @@ class AddVideosWidget(BaseWidget):
         videos = self.get_videos()
         for brain in videos:
             video = brain.getObject()
+
+            video_image = video.image.filename if video.image else ''
             items.append(strategy.decoratorFactory({'item':brain,
                 'video_url': video.video_url,
-                'video_thumb': video.image.filename,
+                'video_thumb': video_image,
                 'date': video.created().strftime("%d/%m/%Y")}))
 
         return self.selected_template(children=items, level=1)
