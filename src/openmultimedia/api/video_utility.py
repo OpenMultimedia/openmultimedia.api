@@ -225,6 +225,53 @@ class VideoAPI(object):
 
         return base_url
 
+    def get_section_tag_clip_list(self, section=None, tag=None, offset=None, limit=None):
+        registry = getUtility(IRegistry)
+        records = registry.forInterface(IAPISettings)
+
+        url_base = records.url_base
+        video_api = records.video_api
+
+        offset_param = records.offset
+        limit_param = records.limit
+        details_param = records.details
+        video_category = records.video_category
+        video_region = records.video_region
+        
+        base_url = "%s%s" % (url_base, video_api)
+
+        params = {details_param: 'completo',}
+
+        if offset:
+            params[offset_param] = offset
+
+        if limit:
+            params[limit_param] = limit
+        
+        if tag:
+            params['tag'] = tag
+        
+        # Mimic the cmswidgets/controllers/ultimos_seccion_controller.js
+        # functionality
+        if section:
+            if section == 'latinoamerica':
+                params[video_region] = 'america-latina'
+            elif section == 'vuelta-al-mundo':
+                params[video_region] = 'excepto__america-latina'
+            elif section == 'salud' or section == 'tecnologia':
+                params[video_category] = 'ciencia'
+            elif (section == 'deportes' or
+                  section == 'ciencia' or
+                  section == 'cultura', section == 'nacionales'):
+                params[video_category] = section
+
+        params = urllib.urlencode(params)
+
+        base_url += params
+
+        return base_url
+    
+
     def get_latest_videos_from_section(self, section, limit=4):
         registry = getUtility(IRegistry)
         records = registry.forInterface(IAPISettings)
