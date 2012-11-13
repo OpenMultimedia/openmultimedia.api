@@ -237,7 +237,7 @@ class VideoAPI(object):
         details_param = records.details
         video_category = records.video_category
         video_region = records.video_region
-        
+
         base_url = "%s%s" % (url_base, video_api)
 
         params = {details_param: 'completo',}
@@ -247,10 +247,10 @@ class VideoAPI(object):
 
         if limit:
             params[limit_param] = limit
-        
+
         if tag:
             params['tag'] = tag
-        
+
         # Mimic the cmswidgets/controllers/ultimos_seccion_controller.js
         # functionality
         if section:
@@ -270,7 +270,7 @@ class VideoAPI(object):
         base_url += params
 
         return base_url
-    
+
 
     def get_latest_videos_from_section(self, section, limit=4):
         registry = getUtility(IRegistry)
@@ -391,3 +391,9 @@ class VideoAPI(object):
             result = self.get_videos_most_seen(['today', 'week', 'month'])
 
         return result
+
+    def get_channels(self):
+        registry = getUtility(IRegistry)
+        records = registry.forInterface(IAPISettings)
+        url_base = records.url_base
+        return self.get_json(url_base + "canal/")

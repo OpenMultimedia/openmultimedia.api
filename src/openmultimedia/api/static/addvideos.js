@@ -18,11 +18,11 @@ function addVideoToContainer(video){
 $(function() {
     if($("#relatedVideos").length) {
         $("#form-widgets-IAddableVideos-relatedVideos-contenttree-window").draggable();
-		$( "#relatedVideos ul.from .navTreeItem").liveDraggable({ containment: ".relatedVideos",  scroll: false, helper: "clone"}); 
+		$( "#relatedVideos ul.from .navTreeItem").liveDraggable({ containment: ".relatedVideos",  scroll: false, helper: "clone"});
         $("#relatedVideos ul.recieve").droppable({
         			activeClass: "ui-state-default",
         			hoverClass: "ui-state-hover",
-        			drop: function(event, ui) {     
+        			drop: function(event, ui) {
         			  var children = $(this).children();
         			  var i = 0;
         			  var exists = false;
@@ -39,21 +39,21 @@ $(function() {
                         }
         			  }
         			  if(!exists) {
-        			    var clon = ui.draggable.clone()
+        			    var clon = ui.draggable.clone();
         			    var children = $("ul",clon);
         			    if(children.length) {
         			      children.remove();
         			    }
         			    clon.append("<div class='related-item-close'>X</div>");
         			    clon.appendTo( this );
-        			  }	
+        			  }
         			}
         		}).sortable();
     $("#relatedVideos ul.recieve li").append("<div class='related-item-close'>X</div>");
     $("#relatedVideos ul.recieve li a").live("click", function(e) {
       e.preventDefault();
       return false;
-    })
+    });
     $(".related-item-close").live("click", function() {
         $(this).parent().remove();
     });
@@ -62,22 +62,24 @@ $(function() {
 });
 
 if(jQuery) (function($){
-   
+
     $.extend($.fn, {
         contentTreeAddVideos: function() {
-            var data_url = []
-            var data_title = []
+            var data_url = [];
+            var data_title = [];
+            var data_type = [];
             $("#videos-loading-spinner-add").css("display", "block");
             $(".ui-droppable > li > a").each(function () {
                 data_url.push($(this).attr('href'));
                 data_title.push($(this).text());
+                data_type.push($(this).attr("data-type"));
                 removeVideoFromDroppable($(this));
             });
             jQuery.ajax({type: 'POST',
                 url: '@@manage-video-in-context',
                 async : false,
                 data: {'titles':data_title,
-                    'urls':data_url},
+                    'urls':data_url, 'media-types': data_type},
                 success: function(results){
                     $("#videos-loading-spinner-add").css("display", "none");
                 // XXX: Do we need to do something with the results ?

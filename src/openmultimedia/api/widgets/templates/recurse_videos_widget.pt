@@ -3,14 +3,14 @@
                     offset options/offset | nothing;
                     portal_state context/@@plone_portal_state;
                     portal_url portal_state/portal_url;">
-                    
+
     <tal:navitem repeat="node children">
         <tal:defs define="video_url           node/video_url;
-                          video_thumb         node/video_thumb;
                           selectable          node/selectable;
                           description         node/description;
                           title               node/title;
                           date                node/date;
+                          data_type           node/type;
                           li_folder_class     python:'';
                           li_selectable_class python:selectable and ' selectable' or '';
                           li_collapsed_class  python:' collapsed';
@@ -19,8 +19,9 @@
 
                 <a tal:attributes="href video_url;
                                    rel level;
+                                   data-type data_type;
                                    title title;">
-                <img class="video-widget-thumb" width="120" tal:attributes="src video_thumb" />
+                <img class="video-widget-thumb" tal:condition="python: 'video_thumb' in node.keys()" width="120" tal:attributes="src node/video_thumb" />
                 <div tal:content="date" class="video-widget-date" i18n:translate="">Fecha</div>
                 <div class="video-widget-title" tal:content="title" i18n:translate="">Selected Item Title</div>
                 <div class="video-widget-description" tal:content="description" i18n:translate="">Selected Item Description</div>

@@ -25,9 +25,14 @@ class AddVideosWidget(BaseWidget):
     display_template = ViewPageTemplateFile('templates/add_videos_widget.pt')
     recurse_template = ViewPageTemplateFile('templates/recurse_videos_widget.pt')
     selected_template = ViewPageTemplateFile('templates/related_search.pt')
+    list_channels_template = ViewPageTemplateFile('templates/list_channels.pt')
 
+    def list_channels(self):
+        video_api = getUtility(IVideoAPI)
+        channel_json = video_api.get_channels()
+        return self.list_channels_template(data=channel_json)
 
-    def render_tree(self, query=None, limit=10, offset=0):
+    def render_tree(self, query=None, channel=None, limit=10, offset=0):
         video_api = getUtility(IVideoAPI)
 
         data = []
@@ -36,25 +41,31 @@ class AddVideosWidget(BaseWidget):
 
         if query:
             url = "%s&texto=%s" % (url, query)
-        
+        if channel and channel != 'all':
+            url = "%s&canal=%s" % (url, channel)
+
         json = video_api.get_json(url)
-        
         for entry in json:
             if entry['api_url']:
                 # This check shouldn't be needed since all results should have
                 # videos... but, just in case...
-                data.append(
-                        {
-                            'video_url': entry['api_url'],
-                            'video_thumb': entry['thumbnail_mediano'],
-                            'selectable': True,
-                            'title': entry['titulo'],
-                            'description': entry['descripcion'],
-                            'date': DateTime(entry['fecha']).Date(),
-                        }
-                    )
 
-        return self.recurse_template(children=data, level=1, offset=offset+limit)
+                tmp = {'video_url': entry['api_url'],
+                        'selectable': True,
+                        'title': entry['titulo'],
+                        'description': entry['descripcion'],
+                        'date': DateTime(entry['fecha']).Date(),
+                        'type': 'video'}
+                if 'thumbnail_mediano' in entry.keys():
+                    tmp['video_thumb'] = entry['thumbnail_mediano']
+                if 'canal' in entry.keys():
+                    canal_data = entry['canal']
+                    data_type = canal_data['tipo']
+                    if data_type != 'video':
+                        tmp['type'] = 'audio'
+                data.append(tmp)
+
+        return self.recurse_template(children=data, level=1, offset=offset + limit)
 
     def js_extra(self):
         form_url = self.request.getURL()
@@ -163,7 +174,7 @@ class AddVideosWidget(BaseWidget):
         function hideLoadSpinner() {
         $("#videos-loading-spinner").css("display", "none");
         }
-        
+
         function infiniteScrollVideo() {
             var opts = {context:'#related-content-videos', offset: '%(perc)s'};
             var $footer = $("#related-content-videos #show-more-results");
@@ -185,7 +196,8 @@ class AddVideosWidget(BaseWidget):
         $("#related-content-videos").empty();
         showLoadSpinner();
         var query = document.getElementById('form-widgets-search-videos').value;
-        $("ul#related-content-videos").load('%(url)s',{'query':query}, afterLoad);
+        var channel = $("#list-channels").val();
+        $("ul#related-content-videos").load('%(url)s',{'query':query, 'channel': channel}, afterLoad);
         }
 
         function firstLoad(){
@@ -205,7 +217,6 @@ class AddVideosWidget(BaseWidget):
             $("#show-more-results").remove();
             showMoreSpinner();
             var query = document.getElementById('form-widgets-search-videos').value;
-
             jQuery.ajax({type: 'POST',
                         url: '@@filter-related-videos',
                         async : true,
@@ -221,25 +232,32 @@ class AddVideosWidget(BaseWidget):
         }
 
         """ % dict(url=url, perc="100%")
-    
+
     def render_selected(self):
         portal_state = getMultiAdapter((self.context, self.request),
                                          name=u'plone_portal_state')
         portal = portal_state.portal()
         strategy = getMultiAdapter((portal, self), INavtreeStrategy)
 
-        catalog = getToolByName(self.context, 'portal_catalog')
         items = []
-        
-        videos = self.get_videos()
-        for brain in videos:
-            video = brain.getObject()
 
-            video_image = video.image.filename if video.image else ''
-            items.append(strategy.decoratorFactory({'item':brain,
-                'video_url': video.video_url,
-                'video_thumb': video_image,
-                'date': video.created().strftime("%d/%m/%Y")}))
+        medias = self.get_media()
+        for brain in medias:
+            media = brain.getObject()
+            if media.portal_type == 'openmultimedia.contenttypes.audio':
+                media_type = 'audio'
+                media_url = media.audio_url
+            else:
+                media_type = 'video'
+                media_url = media.video_url
+
+            tmp = {'item': brain,
+                'video_url': media_url,
+                'type': media_type,
+                'date': media.created().strftime("%d/%m/%Y")}
+            if hasattr(media, 'image') and media.image:
+                tmp['video_thumb'] = media.image.filename
+            items.append(strategy.decoratorFactory(tmp))
 
         return self.selected_template(children=items, level=1)
 
@@ -252,7 +270,15 @@ class AddVideosWidget(BaseWidget):
                          sort_on='getObjPositionInParent')
 
         return brains
-    
+
+    def get_media(self):
+        """ Return a list of brains inside the NITF object.
+        """
+        catalog = getToolByName(self.context, 'portal_catalog')
+        path = '/'.join(self.context.getPhysicalPath())
+        brains = catalog(Type=['Video', 'Audio'], path=path,
+                         sort_on='getObjPositionInParent')
+        return brains
 
 
 @implementer(z3c.form.interfaces.IFieldWidget)

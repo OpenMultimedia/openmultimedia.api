@@ -14,7 +14,7 @@ class FilterVideos(grok.View):
     grok.name("filter-related-videos")
     grok.require("zope2.View")
 
-    def __call__(self, query=None, offset=0):
+    def __call__(self, query=None, channel=None, offset=0):
         field = IAddableVideos.get('relatedVideos')
         request = self.request
 
@@ -23,7 +23,7 @@ class FilterVideos(grok.View):
 
         # XXX: REDO
         widget.context = self.context
-        result = widget.render_tree(query=query, limit=10, offset=int(offset))
+        result = widget.render_tree(query=query, channel=channel, limit=10, offset=int(offset))
 
         return result.strip()
 

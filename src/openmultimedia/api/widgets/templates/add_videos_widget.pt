@@ -1,12 +1,13 @@
 <i18n:domain i18n:domain="openmultimedia.api"
              tal:define="portal_state context/@@plone_portal_state;
-                         portal_url portal_state/portal_url;">
+                         portal_url portal_state/portal_url;
+                         ">
 
     <script type="text/javascript" tal:content="structure view/js"></script>
     <script type="text/javascript" tal:content="structure view/filter_js"></script>
 
     <div tal:attributes="id string:${view/id}-autocomplete">
-        <div tal:attributes="id string:${view/id}-input-fields" 
+        <div tal:attributes="id string:${view/id}-input-fields"
              class="autocompleteInputWidget"
              tal:content="structure view/renderQueryWidget" />
         <tal:block replace="structure view/subform/render" />
@@ -17,13 +18,17 @@
             <h2 i18n:translate="heading_contenttree_browse">Browse for videos</h2>
             <div id="relatedWidget-search">
                 <div class="search-container">
-                <input id="form-widgets-search-videos" 
-                       class="text-widget textline-field kssattr-formname-++add++collective.nitf.content kssattr-fieldname-form.widgets.search kssattr-fieldname-form.widgets.IRelatedItems.relatedItems.widgets.query kssattr-fieldset-0" 
-                       type="text"  /> 
-                <input type="submit" value="Search" onclick="filterVideos(); return false;" 
+                <input id="form-widgets-search-videos"
+                       class="text-widget textline-field kssattr-formname-++add++collective.nitf.content kssattr-fieldname-form.widgets.search kssattr-fieldname-form.widgets.IRelatedItems.relatedItems.widgets.query kssattr-fieldset-0"
+                       type="text"  />
+                <input type="submit" value="Search" onclick="filterVideos(); return false;"
                         i18n:attributes="value" id="form-widgets-search-videos-submit"/>
+                <div tal:replace="structure view/list_channels" />
                 </div>
-                
+
+
+
+
             </div>
             <img tal:attributes="src string:${portal_url}/spinner.gif"
                  alt=""
@@ -31,7 +36,7 @@
                  style="display:none"/>
         </div>
         <div class="relatedWidgetContainer">
-              
+
             <div class="relatedWidget" id="relatedVideos">
                 <img tal:attributes="src string:${portal_url}/spinner.gif"
                      alt=""
@@ -67,7 +72,7 @@
             </div>
         </div>
         <div class="contenttreeWindowActions">
-            <input class="context contentTreeAddVideos" type="button" i18n:attributes="value label_contenttree_add" value="Save"/> 
+            <input class="context contentTreeAddVideos" type="button" i18n:attributes="value label_contenttree_add" value="Save"/>
             <input class="standalone contentTreeCancel" i18n:attributes="value label_contenttree_cancel" type="button" value="Cancel"/>
         </div>
     </div>
