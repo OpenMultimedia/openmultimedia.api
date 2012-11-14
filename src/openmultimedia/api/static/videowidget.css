@@ -40,3 +40,7 @@ VIDEO WIDGET
     top: 50%;
     right: 25%;
 }
+
+#relatedVideos.relatedWidget {
+    top: 6em;
+}

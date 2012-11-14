@@ -1,19 +1,13 @@
 # -*- coding: utf-8 -*-
-import urllib
-import json
-import re
-
 from zope.component import getUtility
 
 from zope.interface import implements
 
 from plone.registry.interfaces import IRegistry
 
-from openmultimedia.api.config import PROJECTNAME
 from openmultimedia.api.interfaces import IAPISettings
 from openmultimedia.api.interfaces import IVideoAPI
 from openmultimedia.api.interfaces import IAudioAPI
-from openmultimedia.api import _
 
 
 class AudioAPI(object):

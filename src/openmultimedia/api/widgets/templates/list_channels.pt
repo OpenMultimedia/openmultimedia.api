@@ -1,9 +1,0 @@
-<tal:master define="data options/data | nothing">
- <select id="list-channels">
-  <option value="all" >All</option>
-  <tal:channels repeat="channel data">
-  	<option value="saab" tal:attributes="value channel/slug" tal:content="python: channel['nombre'] + '('+channel['tipo']+')'"></option>
-  </tal:channels>
-
-</select>
-</tal:master>

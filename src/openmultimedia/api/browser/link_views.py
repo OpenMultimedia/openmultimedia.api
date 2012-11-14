@@ -221,7 +221,8 @@ class AddVideoToContext(grok.View):
         normalizer = getUtility(IIDNormalizer)
         id = normalizer.normalize(title)
         if id not in self.context:
-            self.context.invokeFactory('openmultimedia.contenttypes.video', id, title=title, remote_url=url)
+            self.context.invokeFactory('openmultimedia.contenttypes.video',
+                id, title=title, remote_url=url)
         link = self.context[id]
         notify(ObjectInitializedEvent(link))
 
@@ -247,7 +248,7 @@ class ManageVideoInContext(grok.View):
         if not isinstance(titles, list):
             titles = [titles]
         if not isinstance(types, list):
-            titles = [types]
+            types = [types]
         media_brains = self.get_media()
         medias_urls = []
         for brain in media_brains:
@@ -270,9 +271,11 @@ class ManageVideoInContext(grok.View):
                     if id:
                         if id not in self.context:
                             if len(types) > index and types[index] == 'audio':
-                                self.context.invokeFactory('openmultimedia.contenttypes.audio', id, title=title, remote_url=url_s)
+                                self.context.invokeFactory('openmultimedia.contenttypes.audio',
+                                     id, title=title, remote_url=url_s)
                             else:
-                                self.context.invokeFactory('openmultimedia.contenttypes.video', id, title=title, remote_url=url_s)
+                                self.context.invokeFactory('openmultimedia.contenttypes.video',
+                                    id, title=title, remote_url=url_s)
                         link = self.context[id]
                         notify(ObjectInitializedEvent(link))
 
@@ -306,15 +309,6 @@ class ManageVideoInContext(grok.View):
 
     def render(self):
         return ""
-
-        # title = title.strip()
-        #         url = url.strip()
-        #         normalizer = getUtility(IIDNormalizer)
-        #         id = normalizer.normalize(title)
-        #         if id not in self.context:
-        #             self.context.invokeFactory('openmultimedia.contenttypes.video', id, title=title, remote_url=url)
-        #         link = self.context[id]
-        #         notify(ObjectInitializedEvent(link))
 
 
 # XXX: unregister subscriber because is causing issues with standard links

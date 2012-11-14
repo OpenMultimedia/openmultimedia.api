@@ -25,14 +25,14 @@ class AddVideosWidget(BaseWidget):
     display_template = ViewPageTemplateFile('templates/add_videos_widget.pt')
     recurse_template = ViewPageTemplateFile('templates/recurse_videos_widget.pt')
     selected_template = ViewPageTemplateFile('templates/related_search.pt')
-    list_channels_template = ViewPageTemplateFile('templates/list_channels.pt')
+    list_contents_template = ViewPageTemplateFile('templates/list_contents.pt')
 
-    def list_channels(self):
-        video_api = getUtility(IVideoAPI)
-        channel_json = video_api.get_channels()
-        return self.list_channels_template(data=channel_json)
+    def list_content_types(self):
+        media_api = getUtility(IVideoAPI)
+        contents_json = media_api.get_content_types()
+        return self.list_contents_template(data=contents_json)
 
-    def render_tree(self, query=None, channel=None, limit=10, offset=0):
+    def render_tree(self, query=None, content_type=None, limit=10, offset=0):
         video_api = getUtility(IVideoAPI)
 
         data = []
@@ -41,8 +41,8 @@ class AddVideosWidget(BaseWidget):
 
         if query:
             url = "%s&texto=%s" % (url, query)
-        if channel and channel != 'all':
-            url = "%s&canal=%s" % (url, channel)
+        if content_type and content_type != 'all':
+            url = "%s&tipo_contenido=%s" % (url, content_type)
 
         json = video_api.get_json(url)
         for entry in json:
@@ -61,8 +61,12 @@ class AddVideosWidget(BaseWidget):
                 if 'canal' in entry.keys():
                     canal_data = entry['canal']
                     data_type = canal_data['tipo']
-                    if data_type != 'video':
+                    if data_type == 'audio':
                         tmp['type'] = 'audio'
+                    elif data_type == 'video':
+                        tmp['type'] = 'video'
+                    else:
+                        tmp['type'] = 'video'
                 data.append(tmp)
 
         return self.recurse_template(children=data, level=1, offset=offset + limit)
@@ -196,8 +200,8 @@ class AddVideosWidget(BaseWidget):
         $("#related-content-videos").empty();
         showLoadSpinner();
         var query = document.getElementById('form-widgets-search-videos').value;
-        var channel = $("#list-channels").val();
-        $("ul#related-content-videos").load('%(url)s',{'query':query, 'channel': channel}, afterLoad);
+        var content = $("#list-contents").val();
+        $("ul#related-content-videos").load('%(url)s',{'query':query, 'content_type': content}, afterLoad);
         }
 
         function firstLoad(){
@@ -217,10 +221,12 @@ class AddVideosWidget(BaseWidget):
             $("#show-more-results").remove();
             showMoreSpinner();
             var query = document.getElementById('form-widgets-search-videos').value;
+            var content = $("#list-contents").val();
             jQuery.ajax({type: 'POST',
                         url: '@@filter-related-videos',
                         async : true,
                         data: {'query':query,
+                                'content_type':content,
                                 'offset':offset},
                         success: function(results){
                                 hideMoreSpinner();

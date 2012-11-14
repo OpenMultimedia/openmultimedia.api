@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2012-08-08 14:19+0000\n"
+"POT-Creation-Date: 2012-11-14 16:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -141,7 +141,7 @@ msgstr ""
 msgid "Related videos"
 msgstr ""
 
-#: openmultimedia/api/widgets/templates/add_videos_widget.pt:22
+#: openmultimedia/api/widgets/templates/add_videos_widget.pt:24
 msgid "Search"
 msgstr ""
 
@@ -209,18 +209,18 @@ msgstr ""
 msgid "Video widget URL base"
 msgstr ""
 
-#. Default: "Browse for videos"
-#: openmultimedia/api/widgets/templates/add_videos_widget.pt:17
+#. Default: "Browse"
+#: openmultimedia/api/widgets/templates/add_videos_widget.pt:18
 msgid "heading_contenttree_browse"
 msgstr ""
 
 #. Default: "Save"
-#: openmultimedia/api/widgets/templates/add_videos_widget.pt:57
+#: openmultimedia/api/widgets/templates/add_videos_widget.pt:75
 msgid "label_contenttree_add"
 msgstr ""
 
 #. Default: "Cancel"
-#: openmultimedia/api/widgets/templates/add_videos_widget.pt:58
+#: openmultimedia/api/widgets/templates/add_videos_widget.pt:76
 msgid "label_contenttree_cancel"
 msgstr ""
 

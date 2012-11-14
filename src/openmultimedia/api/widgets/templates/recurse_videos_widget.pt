@@ -30,7 +30,7 @@
             </li>
         </tal:defs>
     </tal:navitem>
-    <li class="show_more" id="show-more-results">
+    <li class="show_more" id="show-more-results" tal:condition="python: len(children)>9">
         <a tal:attributes="onclick string:appendMoreVideos(${offset});" i18n:translate="">
            Show More
         </a>

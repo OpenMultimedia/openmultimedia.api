@@ -240,7 +240,7 @@ class VideoAPI(object):
 
         base_url = "%s%s" % (url_base, video_api)
 
-        params = {details_param: 'completo',}
+        params = {details_param: 'completo', }
 
         if offset:
             params[offset_param] = offset
@@ -270,7 +270,6 @@ class VideoAPI(object):
         base_url += params
 
         return base_url
-
 
     def get_latest_videos_from_section(self, section, limit=4):
         registry = getUtility(IRegistry)
@@ -342,7 +341,7 @@ class VideoAPI(object):
         widgets = []
 
         if 'today' in moments:
-            url = "%s&amp;%s" % (base_url,time_filter_day)
+            url = "%s&amp;%s" % (base_url, time_filter_day)
             result = urllib.urlopen(base_url).read()
             result = json.loads(result)
 
@@ -352,7 +351,7 @@ class VideoAPI(object):
             widgets.append(widget)
 
         if 'week' in moments:
-            url = "%s&amp;%s" % (base_url,time_filter_week)
+            url = "%s&amp;%s" % (base_url, time_filter_week)
             result = urllib.urlopen(base_url).read()
             result = json.loads(result)
 
@@ -362,7 +361,7 @@ class VideoAPI(object):
             widgets.append(widget)
 
         if 'month' in moments:
-            url = "%s&amp;%s" % (base_url,time_filter_month)
+            url = "%s&amp;%s" % (base_url, time_filter_month)
             result = urllib.urlopen(base_url).read()
             result = json.loads(result)
 
@@ -372,7 +371,7 @@ class VideoAPI(object):
             widgets.append(widget)
 
         if 'year' in moments:
-            url = "%s&amp;%s" % (base_url,time_filter_year)
+            url = "%s&amp;%s" % (base_url, time_filter_year)
             result = urllib.urlopen(base_url).read()
             result = json.loads(result)
 
@@ -397,3 +396,9 @@ class VideoAPI(object):
         records = registry.forInterface(IAPISettings)
         url_base = records.url_base
         return self.get_json(url_base + "canal/")
+
+    def get_content_types(self):
+        registry = getUtility(IRegistry)
+        records = registry.forInterface(IAPISettings)
+        url_base = records.url_base
+        return self.get_json(url_base + "tipo_contenido/")

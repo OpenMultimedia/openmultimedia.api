@@ -1,0 +1,9 @@
+<tal:master define="data options/data | nothing">
+ <select id="list-contents">
+  <option value="all" i18n:translate="" >Todo</option>
+  <tal:channels repeat="content data">
+  	<option value="" tal:attributes="value content/slug" tal:content="content/nombre"></option>
+  </tal:channels>
+
+</select>
+</tal:master>

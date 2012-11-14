@@ -137,7 +137,7 @@ msgstr "Expresión regular para la coincidencia con videos desde la API."
 msgid "Related videos"
 msgstr "Videos relacionados"
 
-#: openmultimedia/api/widgets/templates/add_videos_widget.pt:22
+#: openmultimedia/api/widgets/templates/add_videos_widget.pt:24
 msgid "Search"
 msgstr "Buscar"
 
@@ -205,18 +205,19 @@ msgstr "Tipo de Video"
 msgid "Video widget URL base"
 msgstr "URL base del widget de video"
 
-#. Default: "Browse for videos"
-#: openmultimedia/api/widgets/templates/add_videos_widget.pt:17
+#. Default: "Browse"
+#: openmultimedia/api/widgets/templates/add_videos_widget.pt:18
+#, fuzzy
 msgid "heading_contenttree_browse"
-msgstr "Buscar Videos"
+msgstr "Buscar"
 
 #. Default: "Save"
-#: openmultimedia/api/widgets/templates/add_videos_widget.pt:57
+#: openmultimedia/api/widgets/templates/add_videos_widget.pt:75
 msgid "label_contenttree_add"
 msgstr "Guardar"
 
 #. Default: "Cancel"
-#: openmultimedia/api/widgets/templates/add_videos_widget.pt:58
+#: openmultimedia/api/widgets/templates/add_videos_widget.pt:76
 msgid "label_contenttree_cancel"
 msgstr "Cancelar"
 
