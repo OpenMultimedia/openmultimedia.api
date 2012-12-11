@@ -57,6 +57,6 @@ class AddableVideos(object):
         return []
 
     @setproperty
-    def _relatedVideos(self, value):
+    def relatedVideos(self, value):
         # Codigo para agregar videos al nitf
         return []
