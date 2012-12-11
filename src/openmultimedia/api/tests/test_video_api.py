@@ -43,7 +43,7 @@ class BrowserLayerTest(unittest.TestCase):
         results = self.video_api.get_json(self.test_url)
         self.assertIs(type(results), dict)
         results = self.video_api.get_json("http://www.google.com")
-        self.assertIs(results, None)
+        self.assertIs(results, [])
 
     def test_get_widgets(self):
         today = {'url': (u'http://multimedia.telesurtv.net/media/video/'
