@@ -1,0 +1,11 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="openmultimedia.api">
+
+    <permission
+        id="openmultimedia.api.UploadVideo"
+        title="openmultimedia.api: Upload Video"
+        />
+
+</configure>

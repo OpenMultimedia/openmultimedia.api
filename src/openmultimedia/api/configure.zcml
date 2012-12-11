@@ -16,5 +16,6 @@
   <include file="utilities.zcml" />
   <include file="behaviors.zcml" />
   <include file="profiles.zcml" />
+  <include file="permissions.zcml" />
 
 </configure>

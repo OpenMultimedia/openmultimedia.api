@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<object name="openmultimedia.api.video" meta_type="Dexterity FTI"
+        i18n:domain="openmultimedia.api"
+        xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title"
+    i18n:translate="">Upload video</property>
+ <property name="description" i18n:translate=""></property>
+ <property name="icon_expr">string:++resource++collective.upload/document_small_upload.png</property>
+ <property name="factory">openmultimedia.api.video</property>
+ <property
+    name="add_view_expr">string:#</property>
+ <property name="global_allow">True</property>
+ <property name="add_permission">openmultimedia.api.UploadVideo</property>
+ <property name="klass">plone.dexterity.content.Item</property>
+</object>

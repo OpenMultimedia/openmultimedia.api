@@ -64,6 +64,11 @@ $(function() {
     });
 }
 
+	$('#plone-contentmenu-factories #openmultimedia-api-video').click(function(event) {
+	    event.preventDefault();
+	    $('.contenttreeWindow').showDialog();
+	    firstLoad();
+	});
 });
 
 if(jQuery) (function($){
