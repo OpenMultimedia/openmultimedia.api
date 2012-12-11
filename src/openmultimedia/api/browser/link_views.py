@@ -48,7 +48,7 @@ class LinkPreviewSmallThumbnailView(grok.View):
 
     def render(self):
         link_api = getMultiAdapter((self.context, self.request),
-                                       name="link_api")
+                                   name="link_api")
         thumb = link_api.get('small_thumbnail')
 
         if thumb:
@@ -64,7 +64,7 @@ class LinkPreviewMediumThumbnailView(grok.View):
 
     def render(self):
         link_api = getMultiAdapter((self.context, self.request),
-                                       name="link_api")
+                                   name="link_api")
         thumb = link_api.get('medium_thumbnail')
 
         if thumb:
@@ -80,7 +80,7 @@ class LinkPreviewLargeThumbnailView(grok.View):
 
     def render(self):
         link_api = getMultiAdapter((self.context, self.request),
-                                       name="link_api")
+                                   name="link_api")
         thumb = link_api.get('large_thumbnail')
 
         if thumb:
@@ -222,7 +222,7 @@ class AddVideoToContext(grok.View):
         id = normalizer.normalize(title)
         if id not in self.context:
             self.context.invokeFactory('openmultimedia.contenttypes.video',
-                id, title=title, remote_url=url)
+                                       id, title=title, remote_url=url)
         link = self.context[id]
         notify(ObjectInitializedEvent(link))
 
@@ -272,10 +272,10 @@ class ManageVideoInContext(grok.View):
                         if id not in self.context:
                             if len(types) > index and types[index] == 'audio':
                                 self.context.invokeFactory('openmultimedia.contenttypes.audio',
-                                     id, title=title, remote_url=url_s)
+                                                           id, title=title, remote_url=url_s)
                             else:
                                 self.context.invokeFactory('openmultimedia.contenttypes.video',
-                                    id, title=title, remote_url=url_s)
+                                                           id, title=title, remote_url=url_s)
                         link = self.context[id]
                         notify(ObjectInitializedEvent(link))
 
