@@ -56,7 +56,7 @@ class AddableVideos(object):
         # Codigo para listar videos ya agregados
         return []
 
-    @setproperty
+    @setproperty  # NOQA
     def relatedVideos(self, value):
         # Codigo para agregar videos al nitf
         return []

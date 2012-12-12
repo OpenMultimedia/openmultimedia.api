@@ -249,35 +249,8 @@ class ManageVideoInContext(grok.View):
             titles = [titles]
         if not isinstance(types, list):
             types = [types]
-        media_brains = self.get_media()
-        medias_urls = []
-        for brain in media_brains:
-            media_obj = brain.getObject()
-            if media_obj.portal_type == 'openmultimedia.contenttypes.audio':
-                medias_urls.append(media_obj.audio_url)
-            else:
-                medias_urls.append(media_obj.video_url)
-
-        normalizer = getUtility(IIDNormalizer)
-        for index, media in enumerate(medias_urls):
-            if media not in urls:
-                self.context.manage_delObjects(media_brains[index].id)
-        if urls and titles and len(urls) == len(titles) and len(types) == len(urls):
-            for index, url in enumerate(urls):
-                url_s = url.strip()
-                if url_s not in medias_urls:
-                    title = titles[index].strip()
-                    id = normalizer.normalize(title)
-                    if id:
-                        if id not in self.context:
-                            if len(types) > index and types[index] == 'audio':
-                                self.context.invokeFactory('openmultimedia.contenttypes.audio',
-                                                           id, title=title, remote_url=url_s)
-                            else:
-                                self.context.invokeFactory('openmultimedia.contenttypes.video',
-                                                           id, title=title, remote_url=url_s)
-                        link = self.context[id]
-                        notify(ObjectInitializedEvent(link))
+        self.del_objs_by_url(urls)
+        self.create_objects(urls, titles, types)
 
     def get_videos(self):
         """ Return a list of brains inside the NITF object.
@@ -306,6 +279,47 @@ class ManageVideoInContext(grok.View):
                          sort_on='getObjPositionInParent')
 
         return brains
+
+    def get_media_urls(self):
+        """ Return a list of objects urls inside the NITF object.
+        """
+        media_urls = []
+        for brain in self.get_media():
+            media_obj = brain.getObject()
+            if media_obj.portal_type == 'openmultimedia.contenttypes.audio':
+                media_urls.append(media_obj.audio_url)
+            else:
+                media_urls.append(media_obj.video_url)
+
+        return media_urls
+
+    def del_objs_by_url(self, urls):
+        media_urls = self.get_media_urls()
+        media_brains = self.get_media_brains()
+        for index, media in enumerate(media_urls):
+            if media not in urls:
+                self.context.manage_delObjects(media_brains[index].id)
+
+    def create_objects(self, urls, titles, types):
+        normalizer = getUtility(IIDNormalizer)
+        media_urls = self.get_media_urls()
+
+        if urls and titles and len(urls) == len(titles) and len(types) == len(urls):
+            for index, url in enumerate(urls):
+                url_s = url.strip()
+                if url_s not in media_urls:
+                    title = titles[index].strip()
+                    obj_id = normalizer.normalize(title)
+                    if obj_id:
+                        if obj_id not in self.context:
+                            if len(types) > index and types[index] == 'audio':
+                                self.context.invokeFactory('openmultimedia.contenttypes.audio',
+                                                           obj_id, title=title, remote_url=url_s)
+                            else:
+                                self.context.invokeFactory('openmultimedia.contenttypes.video',
+                                                           obj_id, title=title, remote_url=url_s)
+                        link = self.context[obj_id]
+                        notify(ObjectInitializedEvent(link))
 
     def render(self):
         return ""
