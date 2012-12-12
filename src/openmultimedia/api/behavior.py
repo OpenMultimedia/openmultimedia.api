@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-# from rwproperty import getproperty
-# from rwproperty import setproperty
 
 from zope.component import adapts
 
@@ -47,20 +45,3 @@ class AddableVideos(object):
     implements(IAddableVideos)
     # Only for containers
     adapts(IDexterityContainer)
-
-    def __init__(self, context):
-        self.context = context
-
-# XXX: this behavior doesn't persists relatedVideos,
-#      the widget itself creates the content,
-#      this property is useless and breaks pyflakes.
-#
-#    @getproperty
-#    def relatedVideos(self):
-#        # Codigo para listar videos ya agregados
-#        return []
-
-#    @setproperty
-#    def relatedVideos(self, value):
-#        # Codigo para agregar videos al nitf
-#        return []
