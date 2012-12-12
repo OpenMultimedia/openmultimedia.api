@@ -3,13 +3,13 @@
         i18n:domain="openmultimedia.api"
         xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="title"
-    i18n:translate="">Upload video</property>
+    i18n:translate="">Multimedia content</property>
  <property name="description" i18n:translate=""></property>
  <property name="icon_expr">string:++resource++collective.upload/document_small_upload.png</property>
- <property name="factory">openmultimedia.api.video</property>
+ <property name="factory">openmultimedia.api.multimedia</property>
  <property
     name="add_view_expr">string:#</property>
  <property name="global_allow">True</property>
- <property name="add_permission">openmultimedia.api.UploadVideo</property>
+ <property name="add_permission">openmultimedia.api.RelateMultimediaContent</property>
  <property name="klass">plone.dexterity.content.Item</property>
 </object>

@@ -6,11 +6,6 @@
 .mr.developer.cfg
 .*.kate-swp
 .DS_Store
-library-settings.txt
-log.html
-output.xml
-report.html
-selenium*
 bin/
 develop-eggs/
 downloads/
@@ -18,6 +13,7 @@ eggs/
 include/
 lib/
 parts/
+src/collective.z3cform.widgets/
 var/
 local.cfg
 .project

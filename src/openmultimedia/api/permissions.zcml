@@ -4,8 +4,8 @@
     i18n_domain="openmultimedia.api">
 
     <permission
-        id="openmultimedia.api.UploadVideo"
-        title="openmultimedia.api: Upload Video"
+        id="openmultimedia.api.RelateMultimediaContent"
+        title="openmultimedia.api: Relate Multimedia Content"
         />
 
 </configure>

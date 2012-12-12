@@ -22,6 +22,13 @@ class InstallTest(unittest.TestCase):
     def test_installed(self):
         self.assertTrue(self.qi.isProductInstalled(PROJECTNAME))
 
+    def test_add_permission(self):
+        permission = 'openmultimedia.api: Relate Multimedia Content'
+        roles = self.portal.rolesOfPermission(permission)
+        roles = [r['name'] for r in roles if r['selected']]
+        expected = ['Contributor', 'Manager', 'Owner', 'Site Administrator']
+        self.assertListEqual(roles, expected)
+
     def test_browserlayer_installed(self):
         layers = [l.getName() for l in registered_layers()]
         self.assertTrue('IOpenmultimediaAPILayer' in layers,
