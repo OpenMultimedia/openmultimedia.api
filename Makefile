@@ -5,7 +5,7 @@ SHELL = /bin/sh
 
 options = -N -q -t 3
 src = src/openmultimedia/api
-minimum_coverage = 60
+minimum_coverage = 59
 pep8_ignores = E501
 css_ignores = ! -name bootstrap\* ! -name jquery\*
 js_ignores = ! -name bootstrap\* ! -name jquery\*
