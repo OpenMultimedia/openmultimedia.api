@@ -23,6 +23,7 @@ class IAudioAPI(Interface):
         http://[url]insertar.js?archivo=[archivo]&amp;width=[width]&solo_audio=true
         """
 
+
 class IVideoAPI(Interface):
     """
     Interface to be implemented by the video utility
@@ -111,158 +112,158 @@ class IAPISettings(Interface):
         description=_(u"Base URL for the API."),
         required=True,
         default=u"http://multimedia.tlsur.net/api/",
-        )
+    )
 
     video_api = schema.TextLine(
         title=_(u"Video API"),
         description=_(u"API to interact with the video."),
         required=True,
         default=u"clip/?",
-        )
+    )
 
     video_api_regex_string = schema.TextLine(
         title=_(u"Video API Regex string"),
         description=_(u"Regex to match with the video API."),
         required=True,
         default=u"^http:\/\/.+\/api\/(?P<url>clip\/.+?)$",
-        )
+    )
 
     video_widget_url_base = schema.TextLine(
         title=_(u"Video widget URL base"),
         description=_(u""),
         required=True,
         default=u"http://multimedia.telesurtv.net/player/insertar.js?archivo=",
-        )
+    )
 
     video_regex_string = schema.TextLine(
         title=_(u"Video Regex string"),
         description=_(u"Regex to match with videos from the API."),
         required=True,
         default=u"^http:\/\/.+\/(?P<url>clips\/.+\.mp4?)$",
-        )
+    )
 
     audio_regex_string = schema.TextLine(
         title=_(u"Audio Regex string"),
         description=_(u"Regex to match with the audio API."),
         required=True,
         default=u"^http:\/\/.+\/(?P<url>clips\/.+\.mp3?)$",
-        )
+    )
 
     most_seen_widget = schema.TextLine(
         title=_(u"Most seen video widget"),
         description=_(u"A widget for the videos most seen"),
         required=True,
         default=u"http://multimedia.telesurtv.net/media/video/cmswidgets/videos.html?widget=mas_vistos",
-        )
+    )
 
     latest_from_section_widget = schema.TextLine(
         title=_(u"Latest video widget from section"),
         description=_(u"A widget that will show the latest video from a given section"),
         required=True,
         default=u"http://multimedia.telesurtv.net/media/video/cmswidgets/videos.html?widget=ultimos_seccion",
-        )
+    )
 
     time_filter_day = schema.TextLine(
         title=_(u"Filter results by day"),
         description=_(u""),
         required=True,
         default=u"tiempo=dia",
-        )
+    )
 
     time_filter_week = schema.TextLine(
         title=_(u"Filter results by week"),
         description=_(u""),
         required=True,
         default=u"tiempo=semana",
-        )
+    )
 
     time_filter_month = schema.TextLine(
         title=_(u"Filter results by month"),
         description=_(u""),
         required=True,
         default=u"tiempo=mes",
-        )
+    )
 
     time_filter_year = schema.TextLine(
         title=_(u"Filter results by year"),
         description=_(u""),
         required=True,
         default=u"tiempo=ano",
-        )
+    )
 
     video_thumbnail_small = schema.TextLine(
         title=_(u"Small thumbnail"),
         description=_(u"Get the small thumbnail from the returned JSON"),
         required=True,
         default=u"thumbnail_pequeno",
-        )
+    )
 
     video_thumbnail_medium = schema.TextLine(
         title=_(u"Medium thumbnail"),
         description=_(u"Get the medium thumbnail from the returned JSON"),
         required=True,
         default=u"thumbnail_mediano",
-        )
+    )
 
     video_thumbnail_large = schema.TextLine(
         title=_(u"Large thumbnail"),
         description=_(u"Get the large thumbnail from the returned JSON"),
         required=True,
         default=u"thumbnail_grande",
-        )
+    )
 
     audio_only = schema.TextLine(
         title=_(u"Audio only"),
         description=_(u"Only get audio"),
         required=True,
         default=u"solo_audio=true",
-        )
+    )
 
     offset = schema.TextLine(
         title=_(u"Offset"),
         description=_(u"Specify the offset for pagination"),
         required=True,
         default=u"offset",
-        )
+    )
 
     limit = schema.TextLine(
         title=_(u"Limit"),
         description=_(u"Specify the number of items to retrieve"),
         required=True,
         default=u"limit",
-        )
+    )
 
     details = schema.TextLine(
         title=_(u"Details"),
         description=_(u"Specify the level of info to retrieve"),
         required=True,
         default=u"detalle",
-        )
+    )
 
     video_type = schema.TextLine(
         title=_(u"Video type"),
         description=_(u"Specify the type of the video"),
         required=True,
         default=u"tipo",
-        )
+    )
 
     video_region = schema.TextLine(
         title=_(u"Video region"),
         description=_(u"Specify the region of the video"),
         required=True,
         default=u"region",
-        )
+    )
 
     video_category = schema.TextLine(
         title=_(u"Video category"),
         description=_(u"Specify the category of the video"),
         required=True,
         default=u"category",
-        )
+    )
 
     video_order = schema.TextLine(
         title=_(u"Order videos"),
         description=_(u"Specify the order of the returned videos"),
         required=True,
         default=u"order",
-        )
+    )

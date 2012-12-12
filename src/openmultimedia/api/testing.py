@@ -23,9 +23,7 @@ class TelesurPolicyFixture(PloneSandboxLayer):
 FIXTURE = TelesurPolicyFixture()
 INTEGRATION_TESTING = IntegrationTesting(
     bases=(FIXTURE,),
-    name='openmultimedia.api:Integration',
-    )
+    name='openmultimedia.api:Integration',)
 FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(FIXTURE,),
-    name='openmultimedia.api:Functional',
-    )
+    name='openmultimedia.api:Functional',)

@@ -31,7 +31,7 @@ class InstallTest(unittest.TestCase):
         portal_javascripts = self.portal.portal_javascripts
         resources = portal_javascripts.getResourceIds()
         self.assertTrue('++resource++openmultimedia.api/addvideos.js' in
-                                                                   resources)
+                        resources)
 
 
 class UninstallTest(unittest.TestCase):
@@ -56,8 +56,7 @@ class UninstallTest(unittest.TestCase):
         portal_javascripts = self.portal.portal_javascripts
         resources = portal_javascripts.getResourceIds()
         self.assertFalse('++resource++openmultimedia.api/addvideos.js' in
-                                                                   resources)
-
+                         resources)
 
 
 def test_suite():
