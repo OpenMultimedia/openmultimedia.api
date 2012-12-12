@@ -31,14 +31,14 @@ class InstallTest(unittest.TestCase):
 
     def test_browserlayer_installed(self):
         layers = [l.getName() for l in registered_layers()]
-        self.assertTrue('IOpenmultimediaAPILayer' in layers,
-                        'browser layer not installed')
+        self.assertIn(
+            'IOpenmultimediaAPILayer', layers, 'browser layer not installed')
 
     def test_javascript_registry(self):
         portal_javascripts = self.portal.portal_javascripts
         resources = portal_javascripts.getResourceIds()
-        self.assertTrue('++resource++openmultimedia.api/addvideos.js' in
-                        resources)
+        self.assertIn(
+            '++resource++openmultimedia.api/addvideos.js', resources)
 
 
 class UninstallTest(unittest.TestCase):
@@ -56,15 +56,11 @@ class UninstallTest(unittest.TestCase):
 
     def test_browserlayer_removed(self):
         layers = [l.getName() for l in registered_layers()]
-        self.assertFalse('IOpenmultimediaAPILayer' in layers,
-                         'browser layer not removed')
+        self.assertNotIn(
+            'IOpenmultimediaAPILayer', layers, 'browser layer not removed')
 
     def test_javascript_registry_removed(self):
         portal_javascripts = self.portal.portal_javascripts
         resources = portal_javascripts.getResourceIds()
-        self.assertFalse('++resource++openmultimedia.api/addvideos.js' in
-                         resources)
-
-
-def test_suite():
-    return unittest.defaultTestLoader.loadTestsFromName(__name__)
+        self.assertNotIn(
+            '++resource++openmultimedia.api/addvideos.js', resources)
