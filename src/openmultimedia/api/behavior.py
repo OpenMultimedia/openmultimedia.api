@@ -34,9 +34,9 @@ class IAddableVideos(form.Schema):
         title=_(u'Related videos'),
         default=[],
         value_type=RelationChoice(title=_(u'Related videos'),
-                      source=ObjPathSourceBinder()),
+                                  source=ObjPathSourceBinder()),
         required=False,
-        )
+    )
 
 alsoProvides(IAddableVideos, IFormFieldProvider)
 

@@ -51,11 +51,11 @@ class AddVideosWidget(BaseWidget):
                 # videos... but, just in case...
 
                 tmp = {'video_url': entry['api_url'],
-                        'selectable': True,
-                        'title': entry['titulo'],
-                        'description': entry['descripcion'],
-                        'date': DateTime(entry['fecha']).Date(),
-                        'type': 'video'}
+                       'selectable': True,
+                       'title': entry['titulo'],
+                       'description': entry['descripcion'],
+                       'date': DateTime(entry['fecha']).Date(),
+                       'type': 'video'}
                 if 'thumbnail_mediano' in entry.keys():
                     tmp['video_thumb'] = entry['thumbnail_mediano']
                 if 'canal' in entry.keys():
@@ -132,9 +132,7 @@ class AddVideosWidget(BaseWidget):
                        domain='collective.formwidget.relationfield',
                        context=self.request))
 
-
     def filter_js(self):
-        form_url = self.request.getURL()
         url = "%s/@@filter-related-videos" % self.context.absolute_url()
 
         return """\
@@ -241,7 +239,7 @@ class AddVideosWidget(BaseWidget):
 
     def render_selected(self):
         portal_state = getMultiAdapter((self.context, self.request),
-                                         name=u'plone_portal_state')
+                                       name=u'plone_portal_state')
         portal = portal_state.portal()
         strategy = getMultiAdapter((portal, self), INavtreeStrategy)
 
@@ -258,9 +256,9 @@ class AddVideosWidget(BaseWidget):
                 media_url = media.video_url
 
             tmp = {'item': brain,
-                'video_url': media_url,
-                'type': media_type,
-                'date': media.created().strftime("%d/%m/%Y")}
+                   'video_url': media_url,
+                   'type': media_type,
+                   'date': media.created().strftime("%d/%m/%Y")}
             if hasattr(media, 'image') and media.image:
                 tmp['video_thumb'] = media.image.filename
             items.append(strategy.decoratorFactory(tmp))

@@ -103,7 +103,7 @@ class VideoAPI(object):
             widget = {'title': _(u"Most seen today"),
                       'url': "%s&amp;%s" % (most_seen_widget,
                                             time_filter_day),
-                    }
+                      }
             widgets.append(widget)
 
         #XXX: This should be done with urlencode
@@ -111,7 +111,7 @@ class VideoAPI(object):
             widget = {'title': _(u"Most seen this week"),
                       'url': "%s&amp;%s" % (most_seen_widget,
                                             time_filter_week),
-                    }
+                      }
             widgets.append(widget)
 
         #XXX: This should be done with urlencode
@@ -119,7 +119,7 @@ class VideoAPI(object):
             widget = {'title': _(u"Most seen this month"),
                       'url': "%s&amp;%s" % (most_seen_widget,
                                             time_filter_month),
-                    }
+                      }
             widgets.append(widget)
 
         #XXX: This should be done with urlencode
@@ -127,7 +127,7 @@ class VideoAPI(object):
             widget = {'title': _(u"Most seen this year"),
                       'url': "%s&amp;%s" % (most_seen_widget,
                                             time_filter_year),
-                    }
+                      }
             widgets.append(widget)
 
         return widgets
@@ -333,51 +333,42 @@ class VideoAPI(object):
         params = urllib.urlencode(params)
         base_url += params
 
-        time_filter_day = records.time_filter_day
-        time_filter_week = records.time_filter_week
-        time_filter_month = records.time_filter_month
-        time_filter_year = records.time_filter_year
-
         widgets = []
 
         if 'today' in moments:
-            url = "%s&amp;%s" % (base_url, time_filter_day)
             result = urllib.urlopen(base_url).read()
             result = json.loads(result)
 
             widget = {'title': _(u"Most seen today"),
                       'videos': result,
-                    }
+                      }
             widgets.append(widget)
 
         if 'week' in moments:
-            url = "%s&amp;%s" % (base_url, time_filter_week)
             result = urllib.urlopen(base_url).read()
             result = json.loads(result)
 
             widget = {'title': _(u"Most seen this week"),
                       'videos': result,
-                    }
+                      }
             widgets.append(widget)
 
         if 'month' in moments:
-            url = "%s&amp;%s" % (base_url, time_filter_month)
             result = urllib.urlopen(base_url).read()
             result = json.loads(result)
 
             widget = {'title': _(u"Most seen this month"),
                       'videos': result,
-                    }
+                      }
             widgets.append(widget)
 
         if 'year' in moments:
-            url = "%s&amp;%s" % (base_url, time_filter_year)
             result = urllib.urlopen(base_url).read()
             result = json.loads(result)
 
             widget = {'title': _(u"Most seen this year"),
                       'videos': result,
-                    }
+                      }
             widgets.append(widget)
 
         return json.dumps(widgets)
@@ -385,7 +376,7 @@ class VideoAPI(object):
     def get_widgets(self, widgets=True):
         if widgets:
             result = self.get_videos_most_seen_widgets(
-                                                    ['today', 'week', 'month'])
+                ['today', 'week', 'month'])
         else:
             result = self.get_videos_most_seen(['today', 'week', 'month'])
 

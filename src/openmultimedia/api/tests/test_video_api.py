@@ -2,18 +2,11 @@
 
 import json
 import unittest2 as unittest
-import urllib
-
-from copy import deepcopy
 
 from zope.component import getUtility
-from zope.component import getMultiAdapter
-
-from zope.interface import alsoProvides
 
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
-from plone.testing.z2 import Browser
 
 from Products.CMFCore.utils import getToolByName
 
@@ -21,6 +14,7 @@ from openmultimedia.api.interfaces import IVideoAPI
 
 from openmultimedia.api.testing import INTEGRATION_TESTING
 #from openmultimedia.api.testing import setupTestContent
+
 
 class BrowserLayerTest(unittest.TestCase):
 
@@ -43,25 +37,25 @@ class BrowserLayerTest(unittest.TestCase):
         results = self.video_api.get_json(self.test_url)
         self.assertIs(type(results), dict)
         results = self.video_api.get_json("http://www.google.com")
-        self.assertIs(results, [])
+        self.assertEqual(results, [])
 
     def test_get_widgets(self):
         today = {'url': (u'http://multimedia.telesurtv.net/media/video/'
-                          'cmswidgets/videos.html?widget=mas_vistos'
-                          '&amp;tiempo=dia'),
+                         'cmswidgets/videos.html?widget=mas_vistos'
+                         '&amp;tiempo=dia'),
                  'title': u'Most seen today'}
         week = {'url': (u'http://multimedia.telesurtv.net/media/video/'
-                          'cmswidgets/videos.html?widget=mas_vistos'
-                          '&amp;tiempo=semana'),
-                 'title': u'Most seen this week'}
+                        'cmswidgets/videos.html?widget=mas_vistos'
+                        '&amp;tiempo=semana'),
+                'title': u'Most seen this week'}
         month = {'url': (u'http://multimedia.telesurtv.net/media/video/'
-                          'cmswidgets/videos.html?widget=mas_vistos'
-                          '&amp;tiempo=mes'),
+                         'cmswidgets/videos.html?widget=mas_vistos'
+                         '&amp;tiempo=mes'),
                  'title': u'Most seen this month'}
         year = {'url': (u'http://multimedia.telesurtv.net/media/video/'
-                          'cmswidgets/videos.html?widget=mas_vistos'
-                          '&amp;tiempo=ano'),
-                 'title': u'Most seen this year'}
+                        'cmswidgets/videos.html?widget=mas_vistos'
+                        '&amp;tiempo=ano'),
+                'title': u'Most seen this year'}
 
         results = self.video_api.get_videos_most_seen_widgets(['today'])
 
@@ -125,14 +119,23 @@ class BrowserLayerTest(unittest.TestCase):
         results = self.video_api.get_video_widget_url(self.test_url)
 
         self.assertEqual(results, (u"http://multimedia.telesurtv.net/"
-                                    "player/insertar.js?archivo=clips/"
-                                    "telesur-video-2011-10-14-201605224901"
-                                    ".mp4&amp;width=400"))
+                                   "player/insertar.js?archivo=clips/"
+                                   "telesur-video-2011-10-14-201605224901"
+                                   ".mp4&amp;width=400"))
 
     def test_get_video_thumb(self):
+        """
+        get_video_thumb should return an url,
+        an empty string indicates an error.
+        """
         results = self.video_api.get_video_thumb(self.test_url)
-        self.assertEqual(results, (u"http://media.tlsur.net/cache/10/f9/"
-                                    "10f910a49e6a261276f90d920063eede.jpg"))
+        self.assertNotEqual(results, '')
+        results = self.video_api.get_video_thumb(self.test_url,
+                                                 thumb_size='medium')
+        self.assertNotEqual(results, '')
+        results = self.video_api.get_video_thumb(self.test_url,
+                                                 thumb_size='large')
+        self.assertNotEqual(results, '')
 
     def test_get_section_latest_videos_widget(self):
 
@@ -144,26 +147,26 @@ class BrowserLayerTest(unittest.TestCase):
 
         for i in categories_list:
             results = self.video_api.get_latest_from_section_video_widget(i)
-            self.assertEqual(results, url+i)
+            self.assertEqual(results, url + i)
 
     def test_get_basic_clip_list(self):
 
         results = self.video_api.get_basic_clip_list()
         self.assertEqual(results,
                          (u'http://multimedia.tlsur.net/api/clip/?'
-                           'detalle=basico'))
+                          'detalle=basico'))
 
         results = self.video_api.get_basic_clip_list(limit=10)
         self.assertEqual(results,
                          (u'http://multimedia.tlsur.net/api/clip/?'
-                           'limit=10&detalle=basico'))
+                          'limit=10&detalle=basico'))
 
         results = self.video_api.get_basic_clip_list(offset=10, limit=10)
         self.assertEqual(results,
                          (u'http://multimedia.tlsur.net/api/clip/?'
-                           'limit=10&detalle=basico&offset=10'))
+                          'limit=10&detalle=basico&offset=10'))
 
-    def test_get_section_latest_videos_widget(self):
+    def test_get_section_latest_videos(self):
 
         categories_list = ['latinoamerica', 'vuelta-al-mundo', 'deportes',
                            'ciencia', 'cultura', 'salud', 'tecnologia']
@@ -192,7 +195,6 @@ class BrowserLayerTest(unittest.TestCase):
         self.assertEqual(type(results), list)
         for i in results:
             self.assertEqual(len(i['videos']), 5)
-
 
         results = self.video_api.get_videos_most_seen(['today',
                                                        'week',
