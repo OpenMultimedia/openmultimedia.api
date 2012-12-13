@@ -64,7 +64,7 @@ $(function() {
     });
 }
 
-	$('#plone-contentmenu-factories #openmultimedia-api-video').click(function(event) {
+	$('#plone-contentmenu-factories #openmultimedia-api-multimedia').click(function(event) {
 	    event.preventDefault();
 	    $('.contenttreeWindow').showDialog();
 	    firstLoad();
