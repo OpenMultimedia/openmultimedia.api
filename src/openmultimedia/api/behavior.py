@@ -45,3 +45,6 @@ class AddableVideos(object):
     implements(IAddableVideos)
     # Only for containers
     adapts(IDexterityContainer)
+
+    def __init__(self, context):
+        self.context = context
