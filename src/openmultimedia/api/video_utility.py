@@ -41,7 +41,7 @@ class VideoAPI(object):
             except (urllib2.URLError, timeout):
                 logger.info("Timeout when trying to access %s" % url)
                 data = None
-                
+
             if data:
                 try:
                     result = json.load(data)
