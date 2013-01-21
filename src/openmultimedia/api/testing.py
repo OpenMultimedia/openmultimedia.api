@@ -35,15 +35,12 @@ class ServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):  # pragma: no co
 
         if path == '/video_api/get_json/timeout':
             sleep(6.1)
-            #self.send_response(200)
-            #self.send_header('Content-Type', 'application/octet-stream')
-            #self.end_headers()
-            
+
         if path == '/video_api/get_json/error_response':
             self.send_response(200)
             self.send_header('Content-Type', 'application/octet-stream')
             self.end_headers()
-            
+
             response = {"Error": "invalid"}
 
             self.end_headers()
