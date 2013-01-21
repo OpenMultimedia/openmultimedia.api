@@ -34,9 +34,22 @@ class BrowserLayerTest(unittest.TestCase):
                          "estudiantes/?detalle=completo")
 
     def test_get_json(self):
+        base_url = 'http://localhost:15555'
+        
         results = self.video_api.get_json(self.test_url)
         self.assertIs(type(results), dict)
         results = self.video_api.get_json("http://www.google.com")
+        self.assertEqual(results, [])
+        
+        results = self.video_api.get_json("%s/video_api/get_json/good_response" % base_url)
+        self.assertEqual(results, [])
+        results = self.video_api.get_json("%s/video_api/get_json/not_found" % base_url)
+        self.assertEqual(results, [])
+        results = self.video_api.get_json("%s/video_api/get_json/internal_error" % base_url)
+        self.assertEqual(results, [])
+        results = self.video_api.get_json("%s/video_api/get_json/timeout" % base_url)
+        self.assertEqual(results, [])
+        results = self.video_api.get_json("%s/video_api/get_json/error_response" % base_url)
         self.assertEqual(results, [])
 
     def test_get_widgets(self):
