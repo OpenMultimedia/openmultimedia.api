@@ -5,6 +5,8 @@ import json
 import re
 import logging
 
+from socket import timeout
+
 from zope.component import getUtility
 
 from zope.interface import implements
@@ -36,10 +38,10 @@ class VideoAPI(object):
             except urllib2.HTTPError:
                 logger.info("An error ocurred when trying to access %s" % url)
                 data = None
-            except urllib2.URLError:
+            except (urllib2.URLError, timeout):
                 logger.info("Timeout when trying to access %s" % url)
                 data = None
-
+                
             if data:
                 try:
                     result = json.load(data)
