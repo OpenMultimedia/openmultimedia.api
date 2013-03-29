@@ -45,6 +45,7 @@ setup(name='openmultimedia.api',
       install_requires=[
           'collective.z3cform.widgets',
           'five.grok>=1.2.0',
+          'Pillow',
           'plone.app.layout',
           'plone.autoform',
           'plone.behavior',
