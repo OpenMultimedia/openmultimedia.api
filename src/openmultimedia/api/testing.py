@@ -75,6 +75,8 @@ class TelesurPolicyFixture(PloneSandboxLayer):
         self.loadZCML(package=z3c.relationfield)
         import plone.dexterity
         self.loadZCML(package=plone.dexterity)
+        import collective.z3cform.widgets
+        self.loadZCML(package=collective.z3cform.widgets)
         import openmultimedia.api
         self.loadZCML(package=openmultimedia.api)
 
