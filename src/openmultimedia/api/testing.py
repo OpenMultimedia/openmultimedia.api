@@ -69,8 +69,6 @@ class TelesurPolicyFixture(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
         # Load ZCML
-        import plone.app.jquery
-        self.loadZCML(package=plone.app.jquery)
         import z3c.relationfield
         self.loadZCML(package=z3c.relationfield)
         import plone.dexterity
