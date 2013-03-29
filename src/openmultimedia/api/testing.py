@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
+from plone.app.testing import FunctionalTesting
+from plone.app.testing import IntegrationTesting
+from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing import PloneSandboxLayer
+from thread import start_new_thread
+from time import sleep
+
 import json
 import SimpleHTTPServer
 import SocketServer
-
-from time import sleep
-from thread import start_new_thread
-
-from plone.app.testing import PloneSandboxLayer
-from plone.app.testing import PLONE_FIXTURE
-from plone.app.testing import IntegrationTesting
-from plone.app.testing import FunctionalTesting
+import sys
 
 
 class ServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):  # pragma: no cover
@@ -26,10 +26,10 @@ class ServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):  # pragma: no co
             self.send_response(200)
             self.send_header('Content-Type', 'application/octet-stream')
             self.end_headers()
-            
+
         if path == '/video_api/get_json/not_found':
             self.send_response(404)
-            
+
         if path == '/video_api/get_json/internal_error':
             self.send_response(500)
 
@@ -47,6 +47,7 @@ class ServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):  # pragma: no co
 
             self.wfile.write(json.dumps(response))
             self.wfile.close()
+
 
 class TelesurPolicyFixture(PloneSandboxLayer):
 
@@ -68,6 +69,12 @@ class TelesurPolicyFixture(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
         # Load ZCML
+        import plone.app.jquery
+        self.loadZCML(package=plone.app.jquery)
+        import z3c.relationfield
+        self.loadZCML(package=z3c.relationfield)
+        import plone.dexterity
+        self.loadZCML(package=plone.dexterity)
         import openmultimedia.api
         self.loadZCML(package=openmultimedia.api)
 
@@ -77,11 +84,12 @@ class TelesurPolicyFixture(PloneSandboxLayer):
         # Install into Plone site using portal_setup
         self.applyProfile(portal, 'openmultimedia.api:default')
 
-
 FIXTURE = TelesurPolicyFixture()
 INTEGRATION_TESTING = IntegrationTesting(
     bases=(FIXTURE,),
-    name='openmultimedia.api:Integration',)
+    name='openmultimedia.api:Integration',
+)
 FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(FIXTURE,),
-    name='openmultimedia.api:Functional',)
+    name='openmultimedia.api:Functional',
+)
