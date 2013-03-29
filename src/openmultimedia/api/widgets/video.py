@@ -2,7 +2,7 @@
 
 from zope.component import getUtility
 from zope.component import getMultiAdapter
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.interface import implementer
 from zope.i18n import translate
 
