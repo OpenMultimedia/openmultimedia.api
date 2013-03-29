@@ -6,9 +6,6 @@ env:
   - PLONE_VERSION=4.1 QA=true
   - PLONE_VERSION=4.2
 matrix:
-  allow_failures:
-    - python: 2.7
-      env: PLONE_VERSION=4.2
   exclude:
     - python: 2.7
       env: PLONE_VERSION=4.1 QA=true
