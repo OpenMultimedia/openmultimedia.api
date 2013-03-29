@@ -43,7 +43,7 @@ setup(name='openmultimedia.api',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'collective.js.jqueryui<1.9'
+          'collective.js.jqueryui<1.9',
           'collective.z3cform.widgets',
           'five.grok>=1.2.0',
           'plone.app.jquery',
