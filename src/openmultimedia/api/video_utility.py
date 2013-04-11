@@ -268,11 +268,9 @@ class VideoAPI(object):
                 params[video_region] = 'america-latina'
             elif section == 'vuelta-al-mundo':
                 params[video_region] = 'excepto__america-latina'
-            elif section == 'salud' or section == 'tecnologia':
+            elif section in ('salud', 'tecnologia', 'ciencia'):
                 params[video_category] = 'ciencia'
-            elif (section == 'deportes' or
-                  section == 'ciencia' or
-                  section == 'cultura', section == 'nacionales'):
+            elif section in ('deportes', 'cultura', 'nacionales'):
                 params[video_category] = section
 
         params = urllib.urlencode(params)

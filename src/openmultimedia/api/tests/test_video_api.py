@@ -2,14 +2,18 @@
 
 import json
 import unittest2 as unittest
+import urllib
 
 from zope.component import getUtility
 
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
 
+from plone.registry.interfaces import IRegistry
+
 from Products.CMFCore.utils import getToolByName
 
+from openmultimedia.api.interfaces import IAPISettings
 from openmultimedia.api.interfaces import IVideoAPI
 
 from openmultimedia.api.testing import INTEGRATION_TESTING
@@ -189,6 +193,50 @@ class BrowserLayerTest(unittest.TestCase):
             results = json.loads(results)
             self.assertEqual(len(results), 4)
             self.assertEqual(type(results), list)
+
+    def test_get_section_tag_clip_list_url_parameters(self):
+        """
+        verifies that parameters returned by the get_section_tag_clip_list
+        method are the expected.
+        """
+        registry = getUtility(IRegistry)
+        records = registry.forInterface(IAPISettings)
+
+        base_url = "%s%s" % (records.url_base, records.video_api)
+        base_params = {records.details: 'completo'}
+
+        section = 'latinoamerica'
+        params = base_params.copy()
+        params[records.video_region] = 'america-latina'
+        expected_result =  base_url + urllib.urlencode(params)
+        results = self.video_api.get_section_tag_clip_list(section)
+        self.assertEqual(results, expected_result)
+
+        section = 'vuelta-al-mundo'
+        params = base_params.copy()
+        params[records.video_region] = 'excepto__america-latina'
+        expected_result =  base_url + urllib.urlencode(params)
+        results = self.video_api.get_section_tag_clip_list(section)
+        self.assertEqual(results, expected_result)
+
+        for section in ('salud', 'tecnologia', 'ciencia'):
+            params = base_params.copy()
+            params[records.video_category] = 'ciencia'
+            expected_result =  base_url + urllib.urlencode(params)
+            results = self.video_api.get_section_tag_clip_list(section)
+            self.assertEqual(results, expected_result)
+
+        for section in ('deportes', 'cultura', 'nacionales'):
+            params = base_params.copy()
+            params[records.video_category] = section
+            expected_result =  base_url + urllib.urlencode(params)
+            results = self.video_api.get_section_tag_clip_list(section)
+            self.assertEqual(results, expected_result)
+
+        for section in (None, 'unknown'):
+            expected_result =  base_url + urllib.urlencode(base_params)
+            results = self.video_api.get_section_tag_clip_list(section)
+            self.assertEqual(results, expected_result)
 
     def test_get_most_seen_videos(self):
         results = self.video_api.get_videos_most_seen(['today'])
